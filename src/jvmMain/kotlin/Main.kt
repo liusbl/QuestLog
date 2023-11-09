@@ -8,18 +8,23 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.platform.Font
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import org.jetbrains.skia.Image
 import java.io.File
 
@@ -83,7 +88,6 @@ fun App() {
 
         Column(
             modifier = Modifier
-                .width(200.dp)
                 .graphicsLayer {
                     translationY = 82f
                     translationX = 31f
@@ -119,7 +123,17 @@ fun App() {
 }
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
+    Window(
+        undecorated = true,
+        transparent = true,
+        resizable = false,
+        state = rememberWindowState(
+            position = WindowPosition.Aligned(Alignment.Center),
+            width = with(LocalDensity.current) { 512.toDp() },
+            height = with(LocalDensity.current) { 666.toDp() } // TODO figure out why 512 is bad
+        ),
+        onCloseRequest = ::exitApplication
+    ) {
         App()
     }
 }
