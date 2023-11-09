@@ -1,11 +1,16 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,22 +23,22 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.WindowPosition
-import androidx.compose.ui.window.application
-import androidx.compose.ui.window.rememberWindowState
+import androidx.compose.ui.window.*
 import org.jetbrains.skia.Image
 import java.io.File
 
 @Composable
 @Preview
-fun App() {
+fun ApplicationScope.App() {
     val topLeftImage = remember { File("resources\\UI-QuestGreeting-TopLeft.png") }
     val topRightImage = remember { File("resources\\UI-QuestGreeting-TopRight.png") }
     val bottomLeftImage = remember { File("resources\\UI-QuestGreeting-BotLeft.png") }
     val bottomRightImage = remember { File("resources\\UI-QuestGreeting-BotRight.png") }
 
     val bookIcon = remember { File("resources\\UI-QuestLog-BookIcon.png") }
+
+    val closeButtonUp = remember { File("resources\\UI-Panel-MinimizeButton-Up.png") }
+    val closeButtonDown = remember { File("resources\\UI-Panel-MinimizeButton-Down.png") }
 
     val titleFont = remember {
         TextStyle(
@@ -92,6 +97,29 @@ fun App() {
             bitmap = remember { Image.makeFromEncoded(bookIcon.readBytes()).toComposeImageBitmap() },
             contentDescription = ""
         )
+        val interactionSource = remember { MutableInteractionSource() }
+        val isClosePressed by interactionSource.collectIsPressedAsState()
+
+        Box(
+            modifier = Modifier
+                .graphicsLayer {
+                    translationY = 15f
+                    translationX = 326f
+                }
+                .clickable(interactionSource, indication = null) { exitApplication() }
+        ) {
+            if (isClosePressed) {
+                Image(
+                    bitmap = remember { Image.makeFromEncoded(closeButtonDown.readBytes()).toComposeImageBitmap() },
+                    contentDescription = ""
+                )
+            } else {
+                Image(
+                    bitmap = remember { Image.makeFromEncoded(closeButtonUp.readBytes()).toComposeImageBitmap() },
+                    contentDescription = ""
+                )
+            }
+        }
 
         Column(
             modifier = Modifier
