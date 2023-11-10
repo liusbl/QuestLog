@@ -77,8 +77,8 @@ fun ApplicationScope.App() {
         Image(
             modifier = Modifier
                 .graphicsLayer {
-                    translationY = 3.8f
-                    translationX = 6.8f
+                    translationY = 3.5f
+                    translationX = 6.5f
                 },
             bitmap = remember { Image.makeFromEncoded(bookIcon.readBytes()).toComposeImageBitmap() },
             contentDescription = ""
