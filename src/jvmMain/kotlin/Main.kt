@@ -30,10 +30,8 @@ import java.io.File
 @Composable
 @Preview
 fun ApplicationScope.App() {
-    val topLeftImage = remember { File("resources\\UI-QuestGreeting-TopLeft.png") }
-    val topRightImage = remember { File("resources\\UI-QuestGreeting-TopRight.png") }
-    val bottomLeftImage = remember { File("resources\\UI-QuestGreeting-BotLeft.png") }
-    val bottomRightImage = remember { File("resources\\UI-QuestGreeting-BotRight.png") }
+    val leftImage = remember { File("resources\\UI-QuestLog-Left.png") } // 512x512
+    val rightImage = remember { File("resources\\UI-QuestLog-Right.png") } // 256x512
 
     val bookIcon = remember { File("resources\\UI-QuestLog-BookIcon.png") }
 
@@ -66,26 +64,14 @@ fun ApplicationScope.App() {
 
     MaterialTheme {
         Row {
-            Column {
-                Image(
-                    bitmap = remember { Image.makeFromEncoded(topLeftImage.readBytes()).toComposeImageBitmap() },
-                    ""
-                )
-                Image(
-                    bitmap = remember { Image.makeFromEncoded(bottomLeftImage.readBytes()).toComposeImageBitmap() },
-                    ""
-                )
-            }
-            Column {
-                Image(
-                    bitmap = remember { Image.makeFromEncoded(topRightImage.readBytes()).toComposeImageBitmap() },
-                    ""
-                )
-                Image(
-                    bitmap = remember { Image.makeFromEncoded(bottomRightImage.readBytes()).toComposeImageBitmap() },
-                    ""
-                )
-            }
+            Image(
+                bitmap = remember { Image.makeFromEncoded(leftImage.readBytes()).toComposeImageBitmap() },
+                ""
+            )
+            Image(
+                bitmap = remember { Image.makeFromEncoded(rightImage.readBytes()).toComposeImageBitmap() },
+                ""
+            )
         }
 
         Image(
@@ -103,8 +89,8 @@ fun ApplicationScope.App() {
         Box(
             modifier = Modifier
                 .graphicsLayer {
-                    translationY = 15f
-                    translationX = 326f
+                    translationY = 8f
+                    translationX = 650f
                 }
                 .clickable(interactionSource, indication = null) { exitApplication() }
         ) {
@@ -164,8 +150,8 @@ fun main() = application {
         resizable = false,
         state = rememberWindowState(
             position = WindowPosition.Aligned(Alignment.Center),
-            width = with(LocalDensity.current) { 512.toDp() },
-            height = with(LocalDensity.current) { 666.toDp() } // TODO figure out why 512 is bad
+            width = with(LocalDensity.current) { 1000.toDp() },
+            height = with(LocalDensity.current) { 1000.toDp() } // TODO figure out why 512 is bad
         ),
         onCloseRequest = ::exitApplication
     ) {
