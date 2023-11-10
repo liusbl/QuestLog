@@ -1,6 +1,8 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,11 +49,13 @@ fun main() = application {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ApplicationScope.App() {
-    var mousePosition by remember { mutableStateOf(Offset(0f, 0f)) }
+    var mousePosition by remember { mutableStateOf(Offset(0f, 0f) to false) }
     MaterialTheme {
         Box(
             modifier = Modifier.onPointerEvent(PointerEventType.Move) {
-                mousePosition = it.changes.first().position
+                val change = it.changes.first()
+                mousePosition = change.position to change.pressed
+//                println(mousePosition)
             }
         ) {
             Background()
@@ -63,7 +67,7 @@ fun ApplicationScope.App() {
                 description = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
                 onDescriptionChange = { description -> /* TODO */ }
             )
-            ScrollBar()
+            ScrollBar(mousePosition)
         }
     }
 }
@@ -106,7 +110,7 @@ private fun CloseButton(
     val closeButtonDown = remember { File("resources\\UI-Panel-MinimizeButton-Down.png") }
 
     val interactionSource = remember { MutableInteractionSource() }
-    val isClosePressed by interactionSource.collectIsPressedAsState()
+    val isPressed by interactionSource.collectIsPressedAsState()
 
     Box(
         modifier = Modifier
@@ -116,7 +120,7 @@ private fun CloseButton(
             }
             .clickable(interactionSource, indication = null) { onCloseClick() }
     ) {
-        if (isClosePressed) {
+        if (isPressed) {
             Image(
                 bitmap = remember { Image.makeFromEncoded(closeButtonDown.readBytes()).toComposeImageBitmap() },
                 contentDescription = ""
@@ -195,29 +199,46 @@ private fun QuestText(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun ScrollBar() {
-    val scrollKnob = remember { File("resources\\UI-ScrollBar-Knob.png") }
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
+private fun ScrollBar(mousePosition: Pair<Offset, Boolean>) {
+    val scrollKnob = remember { File("resources\\UI-ScrollBar-Knob.png") } // 32x32
+    val knobSize = 32f
+    val scrollBarStartY = 84f
+    val scrollBarEndY = 412f
+    var knobTranslationY by remember { mutableStateOf(scrollBarStartY) }
+    val knobTranslationX = 646f
+    val position = mousePosition.first
+    val pressed = mousePosition.second
 
-//        modifier = Modifier
-//            .graphicsLayer {
-//                translationY = 100f
-//                translationX = 100f
-//            }
-//            .clickable(interactionSource, indication = null) { onCloseClick() }
-//        if (isClosePressed) {
-//            Image(
-//                bitmap = remember { Image.makeFromEncoded(closeButtonDown.readBytes()).toComposeImageBitmap() },
-//                contentDescription = ""
-//            )
-//        } else {
-//            Image(
-//                bitmap = remember { Image.makeFromEncoded(closeButtonUp.readBytes()).toComposeImageBitmap() },
-//                contentDescription = ""
-//            )
-//        }
+    val xKnobMax = knobTranslationX + knobSize // by remember { derivedStateOf {
+    val xKnobMin = knobTranslationX // by remember { derivedStateOf {
+    val yKnobMax = knobTranslationY + knobSize // by remember { derivedStateOf {
+    val yKnobMin = knobTranslationY // by remember { derivedStateOf {
+    var interactionStarted by remember { mutableStateOf(false) }
+
+
+//    println("TESTING pressed: $pressed, interactionStarted: $interactionStarted, knobTranslationY: $knobTranslationY, " +
+//            "xKnobMax: $xKnobMax, xKnobMin: $xKnobMin, yKnobMax: $yKnobMax, yKnobMin: $yKnobMin")
+    if (pressed && interactionStarted) {
+        // middle of interaction
+        knobTranslationY = (position.y - knobSize / 2).coerceIn(scrollBarStartY, scrollBarEndY)
+    } else if (pressed && position.x > xKnobMin && position.x < xKnobMax && position.y > yKnobMin && position.y < yKnobMax) {
+        // first time
+        interactionStarted = true
+        knobTranslationY = (position.y - knobSize / 2).coerceIn(scrollBarStartY, scrollBarEndY)
+    } else if (!pressed) {
+        interactionStarted = false
+    }
+    Box(
+        modifier = Modifier
+            .graphicsLayer {
+                translationY = knobTranslationY
+                translationX = knobTranslationX
+            }
+    ) {
+        Image(
+            bitmap = remember { Image.makeFromEncoded(scrollKnob.readBytes()).toComposeImageBitmap() },
+            contentDescription = ""
+        )
+    }
 }
-
