@@ -27,17 +27,106 @@ import androidx.compose.ui.window.*
 import org.jetbrains.skia.Image
 import java.io.File
 
+fun main() = application {
+    Window(
+        undecorated = true,
+        transparent = true,
+        resizable = false,
+        state = rememberWindowState(
+            position = WindowPosition.Aligned(Alignment.Center),
+            width = with(LocalDensity.current) { 1000.toDp() },
+            height = with(LocalDensity.current) { 1000.toDp() } // TODO figure out why 512 is bad
+        ),
+        onCloseRequest = ::exitApplication
+    ) {
+        App()
+    }
+}
+
 @Composable
-@Preview
 fun ApplicationScope.App() {
+    MaterialTheme {
+        Background()
+        BookIcon()
+        CloseButton(onCloseClick = ::exitApplication)
+        QuestText(
+            title = "Wool Would Work",
+            onTitleChange = { title -> /* TODO */ },
+            description = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
+            onDescriptionChange = { description -> /* TODO */ }
+        )
+        ScrollBar()
+    }
+}
+@Composable
+private fun Background() {
     val leftImage = remember { File("resources\\UI-QuestLog-Left.png") } // 512x512
     val rightImage = remember { File("resources\\UI-QuestLog-Right.png") } // 256x512
+    Row {
+        Image(
+            bitmap = remember { Image.makeFromEncoded(leftImage.readBytes()).toComposeImageBitmap() },
+            ""
+        )
+        Image(
+            bitmap = remember { Image.makeFromEncoded(rightImage.readBytes()).toComposeImageBitmap() },
+            ""
+        )
+    }
+}
 
+@Composable
+private fun BookIcon() {
     val bookIcon = remember { File("resources\\UI-QuestLog-BookIcon.png") }
+    Image(
+        modifier = Modifier
+            .graphicsLayer {
+                translationY = 3.5f
+                translationX = 6.5f
+            },
+        bitmap = remember { Image.makeFromEncoded(bookIcon.readBytes()).toComposeImageBitmap() },
+        contentDescription = ""
+    )
+}
 
+@Composable
+private fun CloseButton(
+    onCloseClick: () -> Unit
+) {
     val closeButtonUp = remember { File("resources\\UI-Panel-MinimizeButton-Up.png") }
     val closeButtonDown = remember { File("resources\\UI-Panel-MinimizeButton-Down.png") }
 
+    val interactionSource = remember { MutableInteractionSource() }
+    val isClosePressed by interactionSource.collectIsPressedAsState()
+
+    Box(
+        modifier = Modifier
+            .graphicsLayer {
+                translationY = 8f
+                translationX = 650f
+            }
+            .clickable(interactionSource, indication = null) { onCloseClick() }
+    ) {
+        if (isClosePressed) {
+            Image(
+                bitmap = remember { Image.makeFromEncoded(closeButtonDown.readBytes()).toComposeImageBitmap() },
+                contentDescription = ""
+            )
+        } else {
+            Image(
+                bitmap = remember { Image.makeFromEncoded(closeButtonUp.readBytes()).toComposeImageBitmap() },
+                contentDescription = ""
+            )
+        }
+    }
+}
+
+@Composable
+private fun QuestText(
+    title: String,
+    onTitleChange: (String) -> Unit,
+    description: String,
+    onDescriptionChange: (String) -> Unit
+) {
     val titleFont = remember {
         TextStyle(
             fontFamily = FontFamily(
@@ -61,100 +150,43 @@ fun ApplicationScope.App() {
             fontSize = 13.sp,
         )
     }
-
-    MaterialTheme {
-        Row {
-            Image(
-                bitmap = remember { Image.makeFromEncoded(leftImage.readBytes()).toComposeImageBitmap() },
-                ""
-            )
-            Image(
-                bitmap = remember { Image.makeFromEncoded(rightImage.readBytes()).toComposeImageBitmap() },
-                ""
-            )
-        }
-
-        Image(
-            modifier = Modifier
-                .graphicsLayer {
-                    translationY = 3.5f
-                    translationX = 6.5f
-                },
-            bitmap = remember { Image.makeFromEncoded(bookIcon.readBytes()).toComposeImageBitmap() },
-            contentDescription = ""
-        )
-        val interactionSource = remember { MutableInteractionSource() }
-        val isClosePressed by interactionSource.collectIsPressedAsState()
-
-        Box(
-            modifier = Modifier
-                .graphicsLayer {
-                    translationY = 8f
-                    translationX = 650f
-                }
-                .clickable(interactionSource, indication = null) { exitApplication() }
-        ) {
-            if (isClosePressed) {
-                Image(
-                    bitmap = remember { Image.makeFromEncoded(closeButtonDown.readBytes()).toComposeImageBitmap() },
-                    contentDescription = ""
-                )
-            } else {
-                Image(
-                    bitmap = remember { Image.makeFromEncoded(closeButtonUp.readBytes()).toComposeImageBitmap() },
-                    contentDescription = ""
-                )
-            }
-        }
-
-        Column(
-            modifier = Modifier
-                .graphicsLayer {
-                    translationY = 82f
-                    translationX = 31f
-                },
-        ) {
-            TextField(
-                textStyle = titleFont,
-                value = "Wool Would Work",
-                onValueChange = {},
-                maxLines = 1,
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedLabelColor = Color.Transparent,
-                    unfocusedLabelColor = Color.Transparent
-                )
-            )
-            TextField(
-                textStyle = descriptionStyle,
-                value = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
-                onValueChange = {},
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedLabelColor = Color.Transparent,
-                    unfocusedLabelColor = Color.Transparent
-                )
-            )
-        }
-    }
-}
-
-fun main() = application {
-    Window(
-        undecorated = true,
-        transparent = true,
-        resizable = false,
-        state = rememberWindowState(
-            position = WindowPosition.Aligned(Alignment.Center),
-            width = with(LocalDensity.current) { 1000.toDp() },
-            height = with(LocalDensity.current) { 1000.toDp() } // TODO figure out why 512 is bad
-        ),
-        onCloseRequest = ::exitApplication
+    Column(
+        modifier = Modifier
+            .graphicsLayer {
+                translationY = 82f
+                translationX = 31f
+            },
     ) {
-        App()
+        TextField(
+            textStyle = titleFont,
+            value = title,
+            onValueChange = onTitleChange,
+            maxLines = 1,
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedLabelColor = Color.Transparent,
+                unfocusedLabelColor = Color.Transparent
+            )
+        )
+        TextField(
+            textStyle = descriptionStyle,
+            value = description,
+            onValueChange = onDescriptionChange,
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedLabelColor = Color.Transparent,
+                unfocusedLabelColor = Color.Transparent
+            )
+        )
     }
 }
+
+@Composable
+private fun ScrollBar() {
+    val scrollKnob = remember { File("resources\\UI-ScrollBar-Knob.png") }
+}
+
