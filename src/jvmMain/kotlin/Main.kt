@@ -2,9 +2,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -53,17 +51,22 @@ fun ApplicationScope.App() {
             modifier = Modifier.onPointerEvent(PointerEventType.Move) {
                 val change = it.changes.first()
                 mousePosition = change.position to change.pressed
-//                println(mousePosition)
             }
         ) {
             Background()
             BookIcon()
             CloseButton(onCloseClick = ::exitApplication)
+
+            var title by remember { mutableStateOf("Wool Would Work") }
+            var summary by remember { mutableStateOf("Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.") }
+            var description by remember { mutableStateOf("Lorem ipsum etc etc") }
             QuestText(
-                title = "Wool Would Work",
-                onTitleChange = { title -> /* TODO */ },
-                description = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
-                onDescriptionChange = { description -> /* TODO */ }
+                title = title,
+                onTitleChange = { title = it },
+                summary = summary,
+                onSummaryChange = { summary = it },
+                description = description,
+                onDescriptionChange = { description = it }
             )
             ScrollKnob(mousePosition)
         }
@@ -136,6 +139,8 @@ private fun CloseButton(
 private fun QuestText(
     title: String,
     onTitleChange: (String) -> Unit,
+    summary: String,
+    onSummaryChange: (String) -> Unit,
     description: String,
     onDescriptionChange: (String) -> Unit
 ) {
@@ -162,38 +167,49 @@ private fun QuestText(
             fontSize = 13.sp,
         )
     }
-    Column(
-        modifier = Modifier
-            .graphicsLayer {
-                translationY = 82f
-                translationX = 31f
-            },
-    ) {
-        TextField(
-            textStyle = titleFont,
-            value = title,
-            onValueChange = onTitleChange,
-            maxLines = 1,
-            colors = TextFieldDefaults.textFieldColors(
+
+    val density = LocalDensity.current
+    Row {
+        Box(modifier = Modifier.width(with(density) { 335.toDp() }))
+        Column {
+            Box(modifier = Modifier.height(with(density) { 55.toDp() }))
+            val colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedLabelColor = Color.Transparent,
                 unfocusedLabelColor = Color.Transparent
             )
-        )
-        TextField(
-            textStyle = descriptionStyle,
-            value = description,
-            onValueChange = onDescriptionChange,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedLabelColor = Color.Transparent,
-                unfocusedLabelColor = Color.Transparent
+            TextField(
+                modifier = Modifier.width(with(density) { 310.toDp() }),
+                textStyle = titleFont,
+                value = title,
+                onValueChange = onTitleChange,
+                colors = colors
             )
-        )
+            TextField(
+                modifier = Modifier.width(with(density) { 310.toDp() }),
+                textStyle = descriptionStyle,
+                value = summary,
+                onValueChange = onSummaryChange,
+                colors = colors
+            )
+            TextField(
+                modifier = Modifier.width(with(density) { 310.toDp() }),
+                textStyle = titleFont,
+                value = "Description",
+                onValueChange = { /* Do nothing */ },
+                readOnly = true,
+                colors = colors
+            )
+            TextField(
+                modifier = Modifier.width(with(density) { 310.toDp() }),
+                textStyle = descriptionStyle,
+                value = description,
+                onValueChange = onDescriptionChange,
+                colors = colors
+            )
+        }
     }
 }
 
