@@ -1,8 +1,6 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -67,7 +65,7 @@ fun ApplicationScope.App() {
                 description = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
                 onDescriptionChange = { description -> /* TODO */ }
             )
-            ScrollBar(mousePosition)
+            ScrollKnob(mousePosition)
         }
     }
 }
@@ -199,8 +197,20 @@ private fun QuestText(
     }
 }
 
+// TODO Implement scroll buttons
 @Composable
-private fun ScrollBar(mousePosition: Pair<Offset, Boolean>) {
+private fun ScrollButtons() {
+    val buttonTopDisabled = remember { File("resources\\UUI-ScrollBar-ScrollUpButton-Disabled.png") }
+    val buttonTopDown = remember { File("resources\\UUI-ScrollBar-ScrollUpButton-Down.png") }
+    val buttonTopUp = remember { File("resources\\UUI-ScrollBar-ScrollUpButton-Up.png") }
+
+    val buttonBottomDisabled = remember { File("resources\\UUI-ScrollBar-ScrollDownButton-Disabled.png") }
+    val buttonBottomDown = remember { File("resources\\UUI-ScrollBar-ScrollDownButton-Down.png") }
+    val buttonBottomUp = remember { File("resources\\UUI-ScrollBar-ScrollDownButton-Up.png") }
+}
+
+@Composable
+private fun ScrollKnob(mousePosition: Pair<Offset, Boolean>) {
     val scrollKnob = remember { File("resources\\UI-ScrollBar-Knob.png") } // 32x32
     val knobSize = 32f
     val scrollBarStartY = 84f
