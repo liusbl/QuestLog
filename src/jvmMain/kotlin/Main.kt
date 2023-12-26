@@ -171,7 +171,11 @@ private fun QuestText(
     val density = LocalDensity.current
     Row {
         Box(modifier = Modifier.width(with(density) { 335.toDp() }))
-        Column {
+        Column(
+            modifier = Modifier.height(
+                height = with(density) { 450.toDp() }
+            )
+        ) {
             Box(modifier = Modifier.height(with(density) { 55.toDp() }))
             val colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent,
