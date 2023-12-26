@@ -70,6 +70,7 @@ fun ApplicationScope.App() {
                 description = description,
                 onDescriptionChange = { description = it }
             )
+            ScrollButtons()
             ScrollKnob(mousePosition)
         }
     }
@@ -212,23 +213,52 @@ private fun QuestText(
 // TODO Implement scroll buttons
 @Composable
 private fun ScrollButtons() {
-    val buttonTopDisabled = remember { File("resources\\UUI-ScrollBar-ScrollUpButton-Disabled.png") }
-    val buttonTopDown = remember { File("resources\\UUI-ScrollBar-ScrollUpButton-Down.png") }
-    val buttonTopUp = remember { File("resources\\UUI-ScrollBar-ScrollUpButton-Up.png") }
+    val buttonTopDisabled = remember { File("resources\\UI-ScrollBar-ScrollUpButton-Disabled.png") }
+    val buttonTopDown = remember { File("resources\\UI-ScrollBar-ScrollUpButton-Down.png") }
+    val buttonTopUp = remember { File("resources\\UI-ScrollBar-ScrollUpButton-Up.png") }
 
-    val buttonBottomDisabled = remember { File("resources\\UUI-ScrollBar-ScrollDownButton-Disabled.png") }
-    val buttonBottomDown = remember { File("resources\\UUI-ScrollBar-ScrollDownButton-Down.png") }
-    val buttonBottomUp = remember { File("resources\\UUI-ScrollBar-ScrollDownButton-Up.png") }
+    val buttonBottomDisabled = remember { File("resources\\UI-ScrollBar-ScrollDownButton-Disabled.png") }
+    val buttonBottomDown = remember { File("resources\\UI-ScrollBar-ScrollDownButton-Down.png") }
+    val buttonBottomUp = remember { File("resources\\UI-ScrollBar-ScrollDownButton-Up.png") }
+
+    Box(
+        modifier = Modifier
+            .graphicsLayer {
+                translationY = scrollBarStartY - knobSize / 2 - 2
+                translationX = knobTranslationX
+            }
+    ) {
+        Image(
+            bitmap = remember { Image.makeFromEncoded(buttonTopDisabled.readBytes()).toComposeImageBitmap() },
+            contentDescription = ""
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .graphicsLayer {
+                translationY = scrollBarEndY + knobSize / 2 + 3
+                translationX = knobTranslationX
+            }
+    ) {
+        Image(
+            bitmap = remember { Image.makeFromEncoded(buttonBottomDisabled.readBytes()).toComposeImageBitmap() },
+            contentDescription = ""
+        )
+    }
+
 }
+
+val knobSize = 32f
+val scrollBarStartY = 84f
+val scrollBarEndY = 412f
+val knobTranslationX = 646f
 
 @Composable
 private fun ScrollKnob(mousePosition: Pair<Offset, Boolean>) {
     val scrollKnob = remember { File("resources\\UI-ScrollBar-Knob.png") } // 32x32
-    val knobSize = 32f
-    val scrollBarStartY = 84f
-    val scrollBarEndY = 412f
+
     var knobTranslationY by remember { mutableStateOf(scrollBarStartY) }
-    val knobTranslationX = 646f
     val position = mousePosition.first
     val pressed = mousePosition.second
 
