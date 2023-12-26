@@ -3,6 +3,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -20,6 +21,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.*
@@ -170,48 +172,38 @@ private fun QuestText(
 
     val density = LocalDensity.current
     Row {
-        Box(modifier = Modifier.width(with(density) { 335.toDp() }))
+        Box(modifier = Modifier.width(with(density) { 355.toDp() }))
         Column(
             modifier = Modifier.height(
-                height = with(density) { 450.toDp() }
+                height = with(density) { 435.toDp() }
             )
         ) {
-            Box(modifier = Modifier.height(with(density) { 55.toDp() }))
-            val colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedLabelColor = Color.Transparent,
-                unfocusedLabelColor = Color.Transparent
-            )
-            TextField(
-                modifier = Modifier.width(with(density) { 310.toDp() }),
+            Box(modifier = Modifier.height(with(density) { 75.toDp() }))
+            BasicTextField(
+                modifier = Modifier.width(with(density) { 270.toDp() }),
                 textStyle = titleFont,
                 value = title,
                 onValueChange = onTitleChange,
-                colors = colors
             )
-            TextField(
-                modifier = Modifier.width(with(density) { 310.toDp() }),
+            BasicTextField(
+                modifier = Modifier.width(with(density) { 270.toDp() }),
                 textStyle = descriptionStyle,
                 value = summary,
                 onValueChange = onSummaryChange,
-                colors = colors
             )
-            TextField(
-                modifier = Modifier.width(with(density) { 310.toDp() }),
+            Spacer(modifier = Modifier.height(with(density) { 8.toDp() }))
+            BasicTextField(
+                modifier = Modifier.width(with(density) { 270.toDp() }),
                 textStyle = titleFont,
                 value = "Description",
                 onValueChange = { /* Do nothing */ },
                 readOnly = true,
-                colors = colors
             )
-            TextField(
-                modifier = Modifier.width(with(density) { 310.toDp() }),
+            BasicTextField(
+                modifier = Modifier.width(with(density) { 270.toDp() }),
                 textStyle = descriptionStyle,
                 value = description,
                 onValueChange = onDescriptionChange,
-                colors = colors
             )
         }
     }
