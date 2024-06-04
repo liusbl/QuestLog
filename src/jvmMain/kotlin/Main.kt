@@ -5,14 +5,12 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.input.pointer.PointerEventType
@@ -21,7 +19,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.*
@@ -62,6 +59,7 @@ fun ApplicationScope.App() {
             var title by remember { mutableStateOf("Wool Would Work") }
             var summary by remember { mutableStateOf("Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.") }
             var description by remember { mutableStateOf("Lorem ipsum etc etc") }
+            QuestButtons()
             QuestText(
                 title = title,
                 onTitleChange = { title = it },
@@ -138,6 +136,7 @@ private fun CloseButton(
     }
 }
 
+
 @Composable
 private fun QuestText(
     title: String,
@@ -208,6 +207,71 @@ private fun QuestText(
             )
         }
     }
+}
+// TODO Implement quest buttons
+@Composable
+private fun QuestButtons() {
+    val buttonUp = remember { File("resources\\UI-Panel-Button-Up.png") }
+    val buttonDown = remember { File("resources\\UI-Panel-Button-Down.png") }
+
+    @Composable
+    fun Button(
+        title: String,
+        translationX: Float,
+        scaleX: Float,
+        onClick: () -> Unit
+    ) {
+        val interactionSource = remember { MutableInteractionSource() }
+        val isPressed by interactionSource.collectIsPressedAsState()
+
+        Box(
+            modifier = Modifier
+                .graphicsLayer {
+                    translationY = 436f
+                    this.translationX = translationX
+                }
+                .clickable(interactionSource, indication = null) {
+                    onClick()
+                }
+        ) {
+            if (isPressed) {
+                Image(
+                    modifier = Modifier.scale(scaleX, 1f),
+                    bitmap = remember { Image.makeFromEncoded(buttonDown.readBytes()).toComposeImageBitmap() },
+                    contentDescription = ""
+                )
+            } else {
+                Image(
+                    modifier = Modifier.scale(scaleX, 1f),
+                    bitmap = remember { Image.makeFromEncoded(buttonUp.readBytes()).toComposeImageBitmap() },
+                    contentDescription = ""
+                )
+            }
+        }
+    }
+
+    val bigButtonScale = 1.57f
+
+    Button(
+        title = "Abandon Quest",
+        translationX = 52f,
+        scaleX = bigButtonScale,
+        onClick = { }
+    )
+
+    Button(
+        title = "Share Quest",
+        translationX = 176f,
+        scaleX = bigButtonScale,
+        onClick = { }
+    )
+
+    Button(
+        title = "Exit",
+        translationX = 265f,
+        scaleX = 1f,
+        onClick = { }
+    )
 }
 
 // TODO Implement scroll buttons
