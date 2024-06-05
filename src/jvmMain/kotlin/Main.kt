@@ -28,6 +28,15 @@ import androidx.compose.ui.window.*
 import org.jetbrains.skia.Image
 import java.io.File
 
+object QuestDifficultyColor {
+    val Impossible = Color(red = 1.00f, green = 0.10f, blue = 0.10f)
+    val VeryDifficult = Color(red = 1.00f, green = 0.50f, blue = 0.25f)
+    val Difficult = Color(red = 1.00f, green = 1.00f, blue = 0.00f)
+    val Standard = Color(red = 0.25f, green = 0.75f, blue = 0.25f)
+    val Trivial = Color(red = 0.50f, green = 0.50f, blue = 0.50f)
+    val Header = Color(red = 0.7f, green = 0.7f, blue = 0.7f)
+}
+
 fun main() = application {
     Window(
         undecorated = true,
@@ -59,10 +68,13 @@ fun ApplicationScope.App() {
             BookIcon()
             CloseButton(onCloseClick = ::exitApplication)
 
+            QuestList()
+
+            QuestButtons()
+
             var title by remember { mutableStateOf("Wool Would Work") }
             var summary by remember { mutableStateOf("Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.") }
             var description by remember { mutableStateOf("Lorem ipsum etc etc") }
-            QuestButtons()
             QuestText(
                 title = title,
                 onTitleChange = { title = it },
@@ -71,6 +83,7 @@ fun ApplicationScope.App() {
                 description = description,
                 onDescriptionChange = { description = it }
             )
+
             ScrollButtons()
             ScrollKnob(mousePosition)
         }
@@ -212,7 +225,14 @@ private fun QuestText(
     }
 }
 
-// TODO Implement quest buttons
+@Composable
+private fun QuestList() {
+    val minusButtonUp = remember { File("resources\\UI-MinusButton-Up.png") }
+    val minusButtonDown = remember { File("resources\\UI-MinusButton-Down.png") }
+    val plusButtonUp = remember { File("resources\\UI-PlusButton-Up.png") }
+    val plusButtonDown = remember { File("resources\\UI-PlusButton-Down.png") }
+}
+
 @Composable
 private fun QuestButtons() {
     val buttonUp = remember { File("resources\\UI-Panel-Button-Up.png") }
