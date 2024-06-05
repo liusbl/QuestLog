@@ -5,12 +5,14 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.input.pointer.PointerEventType
@@ -20,6 +22,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.platform.Font
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.*
 import org.jetbrains.skia.Image
@@ -208,17 +211,33 @@ private fun QuestText(
         }
     }
 }
+
 // TODO Implement quest buttons
 @Composable
 private fun QuestButtons() {
     val buttonUp = remember { File("resources\\UI-Panel-Button-Up.png") }
     val buttonDown = remember { File("resources\\UI-Panel-Button-Down.png") }
 
+    val textStyle = remember {
+        TextStyle(
+            fontFamily = FontFamily(
+                Font(
+                    resource = "font\\FRIZQT__.TTF",
+                    style = FontStyle.Normal
+                )
+            ),
+            fontSize = 11.sp,
+            color = Color(red = 0xd2, green = 0x97, blue = 0x33),
+            textAlign = TextAlign.Center
+        )
+    }
+
     @Composable
     fun Button(
         title: String,
         translationX: Float,
         scaleX: Float,
+        textTranslationX: Float,
         onClick: () -> Unit
     ) {
         val interactionSource = remember { MutableInteractionSource() }
@@ -247,6 +266,14 @@ private fun QuestButtons() {
                     contentDescription = ""
                 )
             }
+            Text(
+                modifier = Modifier.graphicsLayer {
+                    translationY = 2.5f
+                    this.translationX = textTranslationX
+                },
+                style = textStyle,
+                text = title
+            )
         }
     }
 
@@ -256,6 +283,7 @@ private fun QuestButtons() {
         title = "Abandon Quest",
         translationX = 52f,
         scaleX = bigButtonScale,
+        textTranslationX = -24f,
         onClick = { }
     )
 
@@ -263,6 +291,7 @@ private fun QuestButtons() {
         title = "Share Quest",
         translationX = 176f,
         scaleX = bigButtonScale,
+        textTranslationX = -12f,
         onClick = { }
     )
 
@@ -270,6 +299,7 @@ private fun QuestButtons() {
         title = "Exit",
         translationX = 265f,
         scaleX = 1f,
+        textTranslationX = 30f,
         onClick = { }
     )
 }
