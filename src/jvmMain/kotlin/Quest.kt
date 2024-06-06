@@ -5,4 +5,5 @@ data class Quest(
     val summary: String,
     val description: String?,
     val difficulty: QuestDifficulty,
+    val selected: Boolean
 )

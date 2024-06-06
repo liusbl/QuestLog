@@ -29,6 +29,9 @@ import org.jetbrains.skia.Image
 import java.io.File
 
 fun main() = application {
+    val viewModel = MainViewModel(
+        questificator = Questificator()
+    )
     Window(
         undecorated = true,
         transparent = true,
@@ -40,13 +43,13 @@ fun main() = application {
         ),
         onCloseRequest = ::exitApplication
     ) {
-        App()
+        App(viewModel)
     }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ApplicationScope.App() {
+fun ApplicationScope.App(viewModel: MainViewModel) {
     var mousePosition by remember { mutableStateOf(Offset(0f, 0f) to false) }
     MaterialTheme {
         Box(
@@ -59,24 +62,23 @@ fun ApplicationScope.App() {
             BookIcon()
             CloseButton(onCloseClick = ::exitApplication)
 
-            QuestList()
+            QuestList(viewModel)
 
             QuestButtons()
 
-            var title by remember { mutableStateOf("Wool Would Work") }
-            var summary by remember { mutableStateOf("Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.") }
-            var description by remember { mutableStateOf("Lorem ipsum etc etc") }
-            QuestText(
-                title = title,
-                onTitleChange = { title = it },
-                summary = summary,
-                onSummaryChange = { summary = it },
-                description = description,
-                onDescriptionChange = { description = it }
-            )
-
             ScrollButtons()
             ScrollKnob(mousePosition)
+
+            val quest = viewModel.currentQuest
+
+            QuestText(
+                title = quest.title,
+                onTitleChange = viewModel::onTitleChange,
+                summary = quest.summary,
+                onSummaryChange = viewModel::onSummaryChange,
+                description = quest.description,
+                onDescriptionChange = viewModel::onDescriptionChange
+            )
         }
     }
 }
@@ -150,7 +152,7 @@ private fun QuestText(
     onTitleChange: (String) -> Unit,
     summary: String,
     onSummaryChange: (String) -> Unit,
-    description: String,
+    description: String?,
     onDescriptionChange: (String) -> Unit
 ) {
     val titleFont = remember {
@@ -199,25 +201,27 @@ private fun QuestText(
                 onValueChange = onSummaryChange,
             )
             Spacer(modifier = Modifier.height(with(density) { 8.toDp() }))
-            BasicTextField(
-                modifier = Modifier.width(with(density) { 270.toDp() }),
-                textStyle = titleFont,
-                value = "Description",
-                onValueChange = { /* Do nothing */ },
-                readOnly = true,
-            )
-            BasicTextField(
-                modifier = Modifier.width(with(density) { 270.toDp() }),
-                textStyle = descriptionStyle,
-                value = description,
-                onValueChange = onDescriptionChange,
-            )
+            description?.let {
+                BasicTextField(
+                    modifier = Modifier.width(with(density) { 270.toDp() }),
+                    textStyle = titleFont,
+                    value = "Description",
+                    onValueChange = { /* Do nothing */ },
+                    readOnly = true,
+                )
+                BasicTextField(
+                    modifier = Modifier.width(with(density) { 270.toDp() }),
+                    textStyle = descriptionStyle,
+                    value = description,
+                    onValueChange = onDescriptionChange,
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun QuestList() {
+private fun QuestList(viewModel: MainViewModel) {
     val minusButtonUp = remember { File("resources\\UI-MinusButton-Up.png") }
     val minusButtonDown = remember { File("resources\\UI-MinusButton-Down.png") }
     val plusButtonUp = remember { File("resources\\UI-PlusButton-Up.png") }
