@@ -1,6 +1,8 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -248,8 +250,8 @@ private fun QuestList(viewModel: MainViewModel) {
                 is QuestContainer -> {
                     val container = it
                     Box {
-                        val interactionSource = remember { MutableInteractionSource() }
-                        val isPressed by interactionSource.collectIsPressedAsState()
+                        val buttonInteractionSource = remember { MutableInteractionSource() }
+                        val buttonIsPressed by buttonInteractionSource.collectIsPressedAsState()
 
                         Box(
                             modifier = Modifier
@@ -257,11 +259,11 @@ private fun QuestList(viewModel: MainViewModel) {
                                     translationY = 75f
                                     translationX = 22f
                                 }
-                                .clickable(interactionSource, indication = null) {
+                                .clickable(buttonInteractionSource, indication = null) {
                                     viewModel.onExpandToggle(container)
                                 }
                         ) {
-                            if (isPressed) {
+                            if (buttonIsPressed) {
                                 Image(
                                     bitmap = if (container.expanded) {
                                         remember {
@@ -290,6 +292,9 @@ private fun QuestList(viewModel: MainViewModel) {
                                 )
                             }
                         }
+                        val textInteractionSource = remember { MutableInteractionSource() }
+                        val textIsHovered by textInteractionSource.collectIsHoveredAsState()
+
                         val textStyle = remember {
                             TextStyle(
                                 fontFamily = FontFamily(
@@ -307,14 +312,21 @@ private fun QuestList(viewModel: MainViewModel) {
                             modifier = Modifier.graphicsLayer {
                                 translationY = 75f
                                 translationX = 40f
-                            },
-                            style = textStyle,
-                            text = it.title
+                            }
+                                .hoverable(textInteractionSource)
+                                .clickable { viewModel.onExpandToggle(container) },
+                            style = textStyle.copy(
+                                color = if (textIsHovered) Color.White else QuestDifficulty.Header.color
+                            ),
+                            text = container.title
                         )
                     }
                 }
 
                 is Quest -> {
+                    val interactionSource = remember { MutableInteractionSource() }
+                    val isHovered by interactionSource.collectIsHoveredAsState()
+
                     val quest = it
                     val textStyle = remember {
                         TextStyle(
@@ -335,9 +347,9 @@ private fun QuestList(viewModel: MainViewModel) {
                             translationY = 75f
                             translationX = 50f
                         }
-                            .clickable { viewModel.onQuestClick(quest) }
-                        ,
-                        style = textStyle,
+                            .hoverable(interactionSource)
+                            .clickable { viewModel.onQuestClick(quest) },
+                        style = textStyle.copy(color = if (isHovered) Color.White else quest.difficulty.color),
                         text = quest.title
                     )
                 }
