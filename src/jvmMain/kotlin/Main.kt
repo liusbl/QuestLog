@@ -28,15 +28,6 @@ import androidx.compose.ui.window.*
 import org.jetbrains.skia.Image
 import java.io.File
 
-object QuestDifficultyColor {
-    val Impossible = Color(red = 1.00f, green = 0.10f, blue = 0.10f)
-    val VeryDifficult = Color(red = 1.00f, green = 0.50f, blue = 0.25f)
-    val Difficult = Color(red = 1.00f, green = 1.00f, blue = 0.00f)
-    val Standard = Color(red = 0.25f, green = 0.75f, blue = 0.25f)
-    val Trivial = Color(red = 0.50f, green = 0.50f, blue = 0.50f)
-    val Header = Color(red = 0.7f, green = 0.7f, blue = 0.7f)
-}
-
 fun main() = application {
     Window(
         undecorated = true,
@@ -231,6 +222,55 @@ private fun QuestList() {
     val minusButtonDown = remember { File("resources\\UI-MinusButton-Down.png") }
     val plusButtonUp = remember { File("resources\\UI-PlusButton-Up.png") }
     val plusButtonDown = remember { File("resources\\UI-PlusButton-Down.png") }
+
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    Box(
+        modifier = Modifier
+            .graphicsLayer {
+                translationY = 75f
+                translationX = 22f
+            }
+            .clickable(interactionSource, indication = null) {
+                // TODO handle collapse/expand onClick
+            }
+    ) {
+        if (isPressed) {
+            Image(
+                bitmap = remember { Image.makeFromEncoded(minusButtonDown.readBytes()).toComposeImageBitmap() },
+                contentDescription = ""
+            )
+        } else {
+            Image(
+                bitmap = remember { Image.makeFromEncoded(minusButtonUp.readBytes()).toComposeImageBitmap() },
+                contentDescription = ""
+            )
+        }
+    }
+
+    val textStyle = remember {
+        TextStyle(
+            fontFamily = FontFamily(
+                Font(
+                    resource = "font\\FRIZQT__.TTF",
+                    style = FontStyle.Normal
+                )
+            ),
+            fontSize = 11.sp,
+            color = QuestDifficulty.Header.color,
+            textAlign = TextAlign.Center
+        )
+    }
+
+    Text(
+        modifier = Modifier.graphicsLayer {
+            translationY = 75f
+            translationX = 40f
+        },
+        style = textStyle,
+        text = "Elwynn Forest"
+    )
 }
 
 @Composable
