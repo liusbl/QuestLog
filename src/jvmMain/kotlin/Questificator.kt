@@ -7,15 +7,15 @@ class Questificator {
                 questList = listOf(
                     Quest(
                         id = "#0",
-                        title = "Wool would work #0",
+                        title = "Wool would work",
                         summary = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
                         description = "Lorem ipsum etc, etc",
-                        difficulty = QuestDifficulty.Difficult,
+                        difficulty = QuestDifficulty.Standard,
                         selected = true
                     ),
                     Quest(
                         id = "#1",
-                        title = "Wool would work #1",
+                        title = "A Bundle of Trouble",
                         summary = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
                         description = "Lorem ipsum etc, etc",
                         difficulty = QuestDifficulty.Difficult,
@@ -23,7 +23,7 @@ class Questificator {
                     ),
                     Quest(
                         id = "#2",
-                        title = "Wool would work #2",
+                        title = "Red Linen Goods",
                         summary = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
                         description = "Lorem ipsum etc, etc",
                         difficulty = QuestDifficulty.Difficult,
@@ -37,7 +37,7 @@ class Questificator {
                 questList = listOf(
                     Quest(
                         id = "#5",
-                        title = "Wool would work #5",
+                        title = "Bounty on Murlocs",
                         summary = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
                         description = "Lorem ipsum etc, etc",
                         difficulty = QuestDifficulty.Difficult,
@@ -45,18 +45,18 @@ class Questificator {
                     ),
                     Quest(
                         id = "#6",
-                        title = "Wool would work #6",
+                        title = "Cloth and Leather Armor",
                         summary = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
                         description = "Lorem ipsum etc, etc",
-                        difficulty = QuestDifficulty.Difficult,
+                        difficulty = QuestDifficulty.VeryDifficult,
                         selected = false
                     ),
                     Quest(
                         id = "#7",
-                        title = "Wool would work #7",
+                        title = "Desperate Prayer",
                         summary = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
                         description = "Lorem ipsum etc, etc",
-                        difficulty = QuestDifficulty.Difficult,
+                        difficulty = QuestDifficulty.Impossible,
                         selected = false
                     )
                 )

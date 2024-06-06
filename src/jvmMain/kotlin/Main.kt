@@ -229,20 +229,6 @@ private fun QuestList(viewModel: MainViewModel) {
     val plusButtonUp = remember { File("resources\\UI-PlusButton-Up.png") }
     val plusButtonDown = remember { File("resources\\UI-PlusButton-Down.png") }
 
-    val textStyle = remember {
-        TextStyle(
-            fontFamily = FontFamily(
-                Font(
-                    resource = "font\\FRIZQT__.TTF",
-                    style = FontStyle.Normal
-                )
-            ),
-            fontSize = 11.sp,
-            color = QuestDifficulty.Header.color,
-            textAlign = TextAlign.Center
-        )
-    }
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -283,6 +269,20 @@ private fun QuestList(viewModel: MainViewModel) {
                                 )
                             }
                         }
+                        val textStyle = remember {
+                            TextStyle(
+                                fontFamily = FontFamily(
+                                    Font(
+                                        resource = "font\\FRIZQT__.TTF",
+                                        style = FontStyle.Normal
+                                    )
+                                ),
+                                fontSize = 11.sp,
+                                color = QuestDifficulty.Header.color,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+
                         Text(
                             modifier = Modifier.graphicsLayer {
                                 translationY = 75f
@@ -297,6 +297,20 @@ private fun QuestList(viewModel: MainViewModel) {
                 }
 
                 is Quest -> {
+                    val textStyle = remember {
+                        TextStyle(
+                            fontFamily = FontFamily(
+                                Font(
+                                    resource = "font\\FRIZQT__.TTF",
+                                    style = FontStyle.Normal
+                                )
+                            ),
+                            fontSize = 11.sp,
+                            color = it.difficulty.color,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
                     Text(
                         modifier = Modifier.graphicsLayer {
                             translationY = 75f
