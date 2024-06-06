@@ -2,6 +2,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 
 
 class MainViewModel(
@@ -36,6 +37,10 @@ class MainViewModel(
         updateList(oldQuest)
     }
 
+    fun onExpandToggle(it: QuestContainer) {
+        questContainerList.update(it) { copy(expanded = !expanded) }
+    }
+
     private fun updateList(oldQuest: Quest) {
         val (containerIndex, questIndex) = questContainerList.withIndex()
             .firstNotNullOf { (containerIndex, container) ->
@@ -55,3 +60,11 @@ class MainViewModel(
 }
 
 fun List<Quest>.set(index: Int, item: Quest): List<Quest> = this.toMutableList().apply { set(index, item) }
+
+fun SnapshotStateList<QuestContainer>.update(
+    oldItem: QuestContainer,
+    update: QuestContainer.() -> QuestContainer
+) {
+    val index = this.indexOf(oldItem)
+    this[index] = oldItem.update()
+}

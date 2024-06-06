@@ -4,6 +4,7 @@ class Questificator {
             QuestContainer(
                 id = "_0",
                 title = "Elwynn Forest",
+                expanded = true,
                 questList = listOf(
                     Quest(
                         id = "#0",
@@ -34,6 +35,7 @@ class Questificator {
             QuestContainer(
                 id = "_1",
                 title = "Priest",
+                expanded = true,
                 questList = listOf(
                     Quest(
                         id = "#5",

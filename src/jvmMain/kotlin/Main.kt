@@ -234,11 +234,19 @@ private fun QuestList(viewModel: MainViewModel) {
             .fillMaxSize()
     ) {
         items(
-            items = viewModel.questContainerList.flatMap { listOf(it) + it.questList },
+            items = viewModel.questContainerList.flatMap { container ->
+                buildList {
+                    add(container)
+                    if (container.expanded) {
+                        addAll(container.questList)
+                    }
+                }
+            },
             key = { it.id }
         ) {
             when (it) {
                 is QuestContainer -> {
+                    val container = it
                     Box {
                         val interactionSource = remember { MutableInteractionSource() }
                         val isPressed by interactionSource.collectIsPressedAsState()
@@ -250,20 +258,33 @@ private fun QuestList(viewModel: MainViewModel) {
                                     translationX = 22f
                                 }
                                 .clickable(interactionSource, indication = null) {
-                                    // TODO handle collapse/expand onClick
+                                    viewModel.onExpandToggle(container)
                                 }
                         ) {
                             if (isPressed) {
                                 Image(
-                                    bitmap = remember {
-                                        Image.makeFromEncoded(minusButtonDown.readBytes()).toComposeImageBitmap()
+                                    bitmap = if (container.expanded) {
+                                        remember {
+                                            Image.makeFromEncoded(minusButtonDown.readBytes()).toComposeImageBitmap()
+                                        }
+                                    } else {
+                                        remember {
+                                            Image.makeFromEncoded(plusButtonDown.readBytes()).toComposeImageBitmap()
+                                        }
                                     },
                                     contentDescription = ""
                                 )
                             } else {
                                 Image(
-                                    bitmap = remember {
-                                        Image.makeFromEncoded(minusButtonUp.readBytes()).toComposeImageBitmap()
+                                    bitmap = if (container.expanded) {
+                                        remember {
+                                            Image.makeFromEncoded(minusButtonUp.readBytes()).toComposeImageBitmap()
+                                        }
+                                    } else {
+                                        remember {
+                                            Image.makeFromEncoded(plusButtonUp.readBytes()).toComposeImageBitmap()
+                                        }
+
                                     },
                                     contentDescription = ""
                                 )

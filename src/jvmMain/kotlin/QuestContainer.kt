@@ -1,5 +1,6 @@
 data class QuestContainer(
     override val id: String,
     val title: String,
-    val questList: List<Quest>
+    val expanded: Boolean,
+    val questList: List<Quest>,
 ): Identifiable
