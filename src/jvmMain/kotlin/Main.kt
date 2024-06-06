@@ -3,6 +3,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -267,14 +269,39 @@ private fun QuestList(viewModel: MainViewModel) {
         )
     }
 
-    Text(
-        modifier = Modifier.graphicsLayer {
-            translationY = 75f
-            translationX = 40f
-        },
-        style = textStyle,
-        text = "Elwynn Forest"
-    )
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        items(
+            items = viewModel.questContainerList.flatMap { listOf(it) + it.questList },
+            key = { it.id }
+        ) {
+            when (it) {
+                is QuestContainer -> {
+                    Text(
+                        modifier = Modifier.graphicsLayer {
+                            translationY = 75f
+                            translationX = 40f
+                        },
+                        style = textStyle,
+                        text = it.title
+                    )
+                }
+
+                is Quest -> {
+                    Text(
+                        modifier = Modifier.graphicsLayer {
+                            translationY = 75f
+                            translationX = 40f
+                        },
+                        style = textStyle,
+                        text = it.title
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
