@@ -314,7 +314,10 @@ private fun QuestList(viewModel: MainViewModel) {
                                 translationX = 40f
                             }
                                 .hoverable(textInteractionSource)
-                                .clickable { viewModel.onExpandToggle(container) },
+                                .clickable(
+                                    interactionSource = textInteractionSource,
+                                    indication = null
+                                ) { viewModel.onExpandToggle(container) },
                             style = textStyle.copy(
                                 color = if (textIsHovered) Color.White else QuestDifficulty.Header.color
                             ),
@@ -348,7 +351,10 @@ private fun QuestList(viewModel: MainViewModel) {
                             translationX = 50f
                         }
                             .hoverable(interactionSource)
-                            .clickable { viewModel.onQuestClick(quest) },
+                            .clickable(
+                                interactionSource = interactionSource,
+                                indication = null
+                            ) { viewModel.onQuestClick(quest) },
                         style = textStyle.copy(color = if (isHovered) Color.White else quest.difficulty.color),
                         text = quest.title
                     )
