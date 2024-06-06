@@ -229,32 +229,6 @@ private fun QuestList(viewModel: MainViewModel) {
     val plusButtonUp = remember { File("resources\\UI-PlusButton-Up.png") }
     val plusButtonDown = remember { File("resources\\UI-PlusButton-Down.png") }
 
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-
-    Box(
-        modifier = Modifier
-            .graphicsLayer {
-                translationY = 75f
-                translationX = 22f
-            }
-            .clickable(interactionSource, indication = null) {
-                // TODO handle collapse/expand onClick
-            }
-    ) {
-        if (isPressed) {
-            Image(
-                bitmap = remember { Image.makeFromEncoded(minusButtonDown.readBytes()).toComposeImageBitmap() },
-                contentDescription = ""
-            )
-        } else {
-            Image(
-                bitmap = remember { Image.makeFromEncoded(minusButtonUp.readBytes()).toComposeImageBitmap() },
-                contentDescription = ""
-            )
-        }
-    }
-
     val textStyle = remember {
         TextStyle(
             fontFamily = FontFamily(
@@ -279,21 +253,54 @@ private fun QuestList(viewModel: MainViewModel) {
         ) {
             when (it) {
                 is QuestContainer -> {
-                    Text(
-                        modifier = Modifier.graphicsLayer {
-                            translationY = 75f
-                            translationX = 40f
-                        },
-                        style = textStyle,
-                        text = it.title
-                    )
+                    Box {
+                        val interactionSource = remember { MutableInteractionSource() }
+                        val isPressed by interactionSource.collectIsPressedAsState()
+
+                        Box(
+                            modifier = Modifier
+                                .graphicsLayer {
+                                    translationY = 75f
+                                    translationX = 22f
+                                }
+                                .clickable(interactionSource, indication = null) {
+                                    // TODO handle collapse/expand onClick
+                                }
+                        ) {
+                            if (isPressed) {
+                                Image(
+                                    bitmap = remember {
+                                        Image.makeFromEncoded(minusButtonDown.readBytes()).toComposeImageBitmap()
+                                    },
+                                    contentDescription = ""
+                                )
+                            } else {
+                                Image(
+                                    bitmap = remember {
+                                        Image.makeFromEncoded(minusButtonUp.readBytes()).toComposeImageBitmap()
+                                    },
+                                    contentDescription = ""
+                                )
+                            }
+                        }
+                        Text(
+                            modifier = Modifier.graphicsLayer {
+                                translationY = 75f
+                                translationX = 40f
+                            },
+                            style = textStyle,
+                            text = it.title
+                        )
+
+                    }
+
                 }
 
                 is Quest -> {
                     Text(
                         modifier = Modifier.graphicsLayer {
                             translationY = 75f
-                            translationX = 40f
+                            translationX = 50f
                         },
                         style = textStyle,
                         text = it.title

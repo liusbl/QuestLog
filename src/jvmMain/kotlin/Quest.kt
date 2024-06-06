@@ -1,5 +1,3 @@
-import androidx.compose.ui.graphics.Color
-
 data class Quest(
     override val id: String,
     val title: String,
@@ -7,4 +5,4 @@ data class Quest(
     val description: String?,
     val difficulty: QuestDifficulty,
     val selected: Boolean
-): Identifiable
+) : Identifiable
