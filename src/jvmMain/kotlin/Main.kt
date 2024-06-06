@@ -286,7 +286,6 @@ private fun QuestList(viewModel: MainViewModel) {
                                         remember {
                                             Image.makeFromEncoded(plusButtonUp.readBytes()).toComposeImageBitmap()
                                         }
-
                                     },
                                     contentDescription = ""
                                 )
@@ -294,6 +293,7 @@ private fun QuestList(viewModel: MainViewModel) {
                         }
                         val textInteractionSource = remember { MutableInteractionSource() }
                         val textIsHovered by textInteractionSource.collectIsHoveredAsState()
+                        val textIsPressed by textInteractionSource.collectIsPressedAsState()
 
                         val textStyle = remember {
                             TextStyle(
@@ -310,8 +310,8 @@ private fun QuestList(viewModel: MainViewModel) {
                         }
                         Text(
                             modifier = Modifier.graphicsLayer {
-                                translationY = 75f
-                                translationX = 40f
+                                translationY = if (textIsPressed) 76f else 75f
+                                translationX = if (textIsPressed) 41f else 40f
                             }
                                 .hoverable(textInteractionSource)
                                 .clickable(
@@ -329,6 +329,7 @@ private fun QuestList(viewModel: MainViewModel) {
                 is Quest -> {
                     val interactionSource = remember { MutableInteractionSource() }
                     val isHovered by interactionSource.collectIsHoveredAsState()
+                    val isPressed by interactionSource.collectIsPressedAsState()
 
                     val quest = it
                     val textStyle = remember {
@@ -347,8 +348,8 @@ private fun QuestList(viewModel: MainViewModel) {
 
                     Text(
                         modifier = Modifier.graphicsLayer {
-                            translationY = 75f
-                            translationX = 50f
+                            translationY = if (isPressed) 76f else 75f
+                            translationX = if (isPressed) 51f else 50f
                         }
                             .hoverable(interactionSource)
                             .clickable(
