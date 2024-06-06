@@ -54,8 +54,44 @@ class MainViewModel(
 
         val container = questContainerList[containerIndex]
         val newContainer = container.copy(questList = container.questList.set(questIndex, currentQuest))
-        println("newContainer: $newContainer")
         questContainerList[containerIndex] = newContainer
+    }
+
+    fun onQuestClick(quest: Quest) {
+        if (quest == currentQuest) return
+
+        val oldQuest = currentQuest
+        val updatedOldQuest = oldQuest.copy(selected = false)
+        val updatedNewQuest = quest.copy(selected = true)
+        currentQuest = updatedNewQuest
+
+        val (oldContainerIndex, oldQuestIndex) = questContainerList.withIndex()
+            .firstNotNullOf { (containerIndex, container) ->
+                val questIndex = container.questList.indexOfFirst { it == oldQuest }
+                if (questIndex != -1) {
+                    containerIndex to questIndex
+                } else {
+                    null
+                }
+            }
+
+        val (newContainerIndex, newQuestIndex) = questContainerList.withIndex()
+            .firstNotNullOf { (containerIndex, container) ->
+                val questIndex = container.questList.indexOfFirst { it == quest }
+                if (questIndex != -1) {
+                    containerIndex to questIndex
+                } else {
+                    null
+                }
+            }
+
+        val oldContainer = questContainerList[oldContainerIndex]
+        val updatedContainer = oldContainer.copy(questList = oldContainer.questList.set(oldQuestIndex, updatedOldQuest))
+        questContainerList[oldContainerIndex] = updatedContainer
+
+        val newContainer = questContainerList[newContainerIndex]
+        val moreUpdatedContainer = newContainer.copy(questList = newContainer.questList.set(newQuestIndex, updatedNewQuest))
+        questContainerList[newContainerIndex] = moreUpdatedContainer
     }
 }
 

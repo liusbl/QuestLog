@@ -303,7 +303,6 @@ private fun QuestList(viewModel: MainViewModel) {
                                 textAlign = TextAlign.Center
                             )
                         }
-
                         Text(
                             modifier = Modifier.graphicsLayer {
                                 translationY = 75f
@@ -312,12 +311,11 @@ private fun QuestList(viewModel: MainViewModel) {
                             style = textStyle,
                             text = it.title
                         )
-
                     }
-
                 }
 
                 is Quest -> {
+                    val quest = it
                     val textStyle = remember {
                         TextStyle(
                             fontFamily = FontFamily(
@@ -327,7 +325,7 @@ private fun QuestList(viewModel: MainViewModel) {
                                 )
                             ),
                             fontSize = 11.sp,
-                            color = it.difficulty.color,
+                            color = quest.difficulty.color,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -336,9 +334,11 @@ private fun QuestList(viewModel: MainViewModel) {
                         modifier = Modifier.graphicsLayer {
                             translationY = 75f
                             translationX = 50f
-                        },
+                        }
+                            .clickable { viewModel.onQuestClick(quest) }
+                        ,
                         style = textStyle,
-                        text = it.title
+                        text = quest.title
                     )
                 }
             }
