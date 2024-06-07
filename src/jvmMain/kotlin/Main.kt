@@ -68,7 +68,7 @@ fun ApplicationScope.App(viewModel: MainViewModel) {
 
             QuestList(viewModel)
 
-            QuestButtons()
+            QuestButtons(onExitClick = ::exitApplication)
 
             ScrollButtons()
             ScrollKnob(mousePosition)
@@ -366,7 +366,7 @@ private fun QuestList(viewModel: MainViewModel) {
 }
 
 @Composable
-private fun QuestButtons() {
+private fun QuestButtons(onExitClick: () -> Unit) {
     val buttonUp = remember { File("resources\\UI-Panel-Button-Up.png") }
     val buttonDown = remember { File("resources\\UI-Panel-Button-Down.png") }
 
@@ -452,7 +452,7 @@ private fun QuestButtons() {
         translationX = 265f,
         scaleX = 1f,
         textTranslationX = 30f,
-        onClick = { }
+        onClick = onExitClick
     )
 }
 
