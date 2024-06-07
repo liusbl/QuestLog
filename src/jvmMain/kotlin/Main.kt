@@ -338,7 +338,7 @@ private fun QuestList(viewModel: MainViewModel) {
                                     ),
                                     fontSize = 11.sp,
                                     color = QuestDifficulty.Header.color,
-                                    textAlign = TextAlign.Center
+                                    textAlign = TextAlign.Left
                                 )
                             }
                             Text(
@@ -346,6 +346,7 @@ private fun QuestList(viewModel: MainViewModel) {
                                     translationY = if (textIsPressed) 76f else 75f
                                     translationX = if (textIsPressed) 41f else 40f
                                 }
+                                    .size(width = 300.toDp(), height = 18.toDp())
                                     .hoverable(textInteractionSource)
                                     .clickable(
                                         interactionSource = textInteractionSource,
