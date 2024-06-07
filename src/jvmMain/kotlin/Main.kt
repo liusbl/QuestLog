@@ -1,5 +1,4 @@
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -19,20 +17,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asAwtImage
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.*
 import org.jetbrains.skia.Image
+import java.awt.Cursor
+import java.awt.Point
+import java.awt.Toolkit
 import java.io.File
 
 fun main() = application {
@@ -65,7 +68,7 @@ fun ApplicationScope.App(viewModel: MainViewModel) {
             modifier = Modifier.onPointerEvent(PointerEventType.Move) {
                 val change = it.changes.first()
                 mousePosition = change.position to change.pressed
-            }
+            }.pointerHoverIcon(PointerIcon(rememberCursor()))
         ) {
             Background()
             BookIcon()
@@ -91,6 +94,13 @@ fun ApplicationScope.App(viewModel: MainViewModel) {
             )
         }
     }
+}
+
+@Composable
+private fun rememberCursor(): Cursor = remember {
+    val bookIcon = File("resources\\Point.png")
+    val image = Image.makeFromEncoded(bookIcon.readBytes()).toComposeImageBitmap().asAwtImage()
+    Toolkit.getDefaultToolkit().createCustomCursor(image, Point(0, 0), "pointer")
 }
 
 @Composable
