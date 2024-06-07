@@ -16,10 +16,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asAwtImage
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
@@ -33,7 +30,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.*
 import org.jetbrains.skia.Image
-import java.awt.Cursor
 import java.awt.Point
 import java.awt.Toolkit
 import java.io.File
@@ -62,13 +58,14 @@ fun main() = application {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ApplicationScope.App(viewModel: MainViewModel) {
-    var mousePosition by remember { mutableStateOf(Offset(0f, 0f) to false) }
+    var pointerPosition by remember { mutableStateOf(Offset(0f, 0f) to false) }
+    val pointerIcon = rememberPointerIcon()
     MaterialTheme {
         Box(
             modifier = Modifier.onPointerEvent(PointerEventType.Move) {
                 val change = it.changes.first()
-                mousePosition = change.position to change.pressed
-            }.pointerHoverIcon(PointerIcon(rememberCursor()))
+                pointerPosition = change.position to change.pressed
+            }.pointerHoverIcon(pointerIcon)
         ) {
             Background()
             BookIcon()
@@ -80,7 +77,7 @@ fun ApplicationScope.App(viewModel: MainViewModel) {
             QuestButtons(onExitClick = ::exitApplication)
 
             ScrollButtons()
-            ScrollKnob(mousePosition)
+            ScrollKnob(pointerPosition)
 
             val quest = viewModel.currentQuest
 
@@ -97,10 +94,10 @@ fun ApplicationScope.App(viewModel: MainViewModel) {
 }
 
 @Composable
-private fun rememberCursor(): Cursor = remember {
+private fun rememberPointerIcon() = remember {
     val bookIcon = File("resources\\Point.png")
-    val image = Image.makeFromEncoded(bookIcon.readBytes()).toComposeImageBitmap().asAwtImage()
-    Toolkit.getDefaultToolkit().createCustomCursor(image, Point(0, 0), "pointer")
+    val image = Image.makeFromEncoded(bookIcon.readBytes()).toComposeImageBitmap().toAwtImage()
+    PointerIcon(Toolkit.getDefaultToolkit().createCustomCursor(image, Point(0, 0), "pointer"))
 }
 
 @Composable
