@@ -69,6 +69,8 @@ fun App(viewModel: MainViewModel) {
             }
         ) {
             Background()
+            BookIcon()
+
             CloseButton(onCloseClick = ::exitApplication)
 
             QuestList(viewModel)
