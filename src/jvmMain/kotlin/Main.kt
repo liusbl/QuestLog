@@ -1,4 +1,5 @@
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -16,7 +18,10 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.toAwtImage
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
@@ -50,14 +55,14 @@ fun main() = application {
         title = "Quest Log",
         onCloseRequest = ::exitApplication
     ) {
-        App(viewModel)
+        App(viewModel, this)
     }
 }
 
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ApplicationScope.App(viewModel: MainViewModel) {
+fun ApplicationScope.App(viewModel: MainViewModel, frameWindowScope: FrameWindowScope) {
     var pointerPosition by remember { mutableStateOf(Offset(0f, 0f) to false) }
     val pointerIcon = rememberPointerIcon()
     MaterialTheme {
@@ -89,6 +94,21 @@ fun ApplicationScope.App(viewModel: MainViewModel) {
                 description = quest.description,
                 onDescriptionChange = viewModel::onDescriptionChange
             )
+
+            with(frameWindowScope) {
+                WindowDraggableArea {
+                    with(LocalDensity.current) {
+                        Box(
+                            modifier = Modifier
+                                .size(64.toDp())
+                        )
+                        Box(
+                            modifier = Modifier
+                                .size(width = 650.toDp(), height = 40.toDp())
+                        )
+                    }
+                }
+            }
         }
     }
 }
