@@ -262,70 +262,109 @@ private fun QuestList(viewModel: MainViewModel) {
     val plusButtonUp = remember { File("resources\\UI-PlusButton-Up.png") }
     val plusButtonDown = remember { File("resources\\UI-PlusButton-Down.png") }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        items(
-            items = viewModel.questContainerList.flatMap { container ->
-                buildList {
-                    add(container)
-                    if (container.expanded) {
-                        addAll(container.questList)
-                    }
-                }
-            },
-            key = { it.id }
+    with(LocalDensity.current) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-            when (it) {
-                is QuestContainer -> {
-                    val container = it
-                    Box {
-                        val buttonInteractionSource = remember { MutableInteractionSource() }
-                        val buttonIsPressed by buttonInteractionSource.collectIsPressedAsState()
+            items(
+                items = viewModel.questContainerList.flatMap { container ->
+                    buildList {
+                        add(container)
+                        if (container.expanded) {
+                            addAll(container.questList)
+                        }
+                    }
+                },
+                key = { it.id }
+            ) {
+                when (it) {
+                    is QuestContainer -> {
+                        val container = it
+                        Box {
+                            val buttonInteractionSource = remember { MutableInteractionSource() }
+                            val buttonIsPressed by buttonInteractionSource.collectIsPressedAsState()
 
-                        Box(
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    translationY = 75f
-                                    translationX = 22f
+                            Box(
+                                modifier = Modifier
+                                    .graphicsLayer {
+                                        translationY = 75f
+                                        translationX = 22f
+                                    }
+                                    .clickable(buttonInteractionSource, indication = null) {
+                                        viewModel.onExpandToggle(container)
+                                    }
+                            ) {
+                                if (buttonIsPressed) {
+                                    Image(
+                                        bitmap = if (container.expanded) {
+                                            remember {
+                                                Image.makeFromEncoded(minusButtonDown.readBytes())
+                                                    .toComposeImageBitmap()
+                                            }
+                                        } else {
+                                            remember {
+                                                Image.makeFromEncoded(plusButtonDown.readBytes()).toComposeImageBitmap()
+                                            }
+                                        },
+                                        contentDescription = ""
+                                    )
+                                } else {
+                                    Image(
+                                        bitmap = if (container.expanded) {
+                                            remember {
+                                                Image.makeFromEncoded(minusButtonUp.readBytes()).toComposeImageBitmap()
+                                            }
+                                        } else {
+                                            remember {
+                                                Image.makeFromEncoded(plusButtonUp.readBytes()).toComposeImageBitmap()
+                                            }
+                                        },
+                                        contentDescription = ""
+                                    )
                                 }
-                                .clickable(buttonInteractionSource, indication = null) {
-                                    viewModel.onExpandToggle(container)
-                                }
-                        ) {
-                            if (buttonIsPressed) {
-                                Image(
-                                    bitmap = if (container.expanded) {
-                                        remember {
-                                            Image.makeFromEncoded(minusButtonDown.readBytes()).toComposeImageBitmap()
-                                        }
-                                    } else {
-                                        remember {
-                                            Image.makeFromEncoded(plusButtonDown.readBytes()).toComposeImageBitmap()
-                                        }
-                                    },
-                                    contentDescription = ""
-                                )
-                            } else {
-                                Image(
-                                    bitmap = if (container.expanded) {
-                                        remember {
-                                            Image.makeFromEncoded(minusButtonUp.readBytes()).toComposeImageBitmap()
-                                        }
-                                    } else {
-                                        remember {
-                                            Image.makeFromEncoded(plusButtonUp.readBytes()).toComposeImageBitmap()
-                                        }
-                                    },
-                                    contentDescription = ""
+                            }
+                            val textInteractionSource = remember { MutableInteractionSource() }
+                            val textIsHovered by textInteractionSource.collectIsHoveredAsState()
+                            val textIsPressed by textInteractionSource.collectIsPressedAsState()
+
+                            val textStyle = remember {
+                                TextStyle(
+                                    fontFamily = FontFamily(
+                                        Font(
+                                            resource = "font\\FRIZQT__.TTF",
+                                            style = FontStyle.Normal
+                                        )
+                                    ),
+                                    fontSize = 11.sp,
+                                    color = QuestDifficulty.Header.color,
+                                    textAlign = TextAlign.Center
                                 )
                             }
+                            Text(
+                                modifier = Modifier.graphicsLayer {
+                                    translationY = if (textIsPressed) 76f else 75f
+                                    translationX = if (textIsPressed) 41f else 40f
+                                }
+                                    .hoverable(textInteractionSource)
+                                    .clickable(
+                                        interactionSource = textInteractionSource,
+                                        indication = null
+                                    ) { viewModel.onExpandToggle(container) },
+                                style = textStyle.copy(
+                                    color = if (textIsHovered) Color.White else QuestDifficulty.Header.color
+                                ),
+                                text = container.title
+                            )
                         }
-                        val textInteractionSource = remember { MutableInteractionSource() }
-                        val textIsHovered by textInteractionSource.collectIsHoveredAsState()
-                        val textIsPressed by textInteractionSource.collectIsPressedAsState()
+                    }
 
+                    is Quest -> {
+                        val interactionSource = remember { MutableInteractionSource() }
+                        val isHovered by interactionSource.collectIsHoveredAsState()
+                        val isPressed by interactionSource.collectIsPressedAsState()
+
+                        val quest = it
                         val textStyle = remember {
                             TextStyle(
                                 fontFamily = FontFamily(
@@ -335,57 +374,19 @@ private fun QuestList(viewModel: MainViewModel) {
                                     )
                                 ),
                                 fontSize = 11.sp,
-                                color = QuestDifficulty.Header.color,
+                                color = quest.difficulty.color,
                                 textAlign = TextAlign.Center
                             )
                         }
-                        Text(
-                            modifier = Modifier.graphicsLayer {
-                                translationY = if (textIsPressed) 76f else 75f
-                                translationX = if (textIsPressed) 41f else 40f
-                            }
-                                .hoverable(textInteractionSource)
-                                .clickable(
-                                    interactionSource = textInteractionSource,
-                                    indication = null
-                                ) { viewModel.onExpandToggle(container) },
-                            style = textStyle.copy(
-                                color = if (textIsHovered) Color.White else QuestDifficulty.Header.color
-                            ),
-                            text = container.title
+
+                        val highlightColor = quest.difficulty.color.copy(alpha = 0.5f)
+                        val brush = Brush.horizontalGradient(
+                            0.0f to Color.Transparent,
+                            0.4f to highlightColor,
+                            0.6f to highlightColor,
+                            1f to Color.Transparent,
                         )
-                    }
-                }
 
-                is Quest -> {
-                    val interactionSource = remember { MutableInteractionSource() }
-                    val isHovered by interactionSource.collectIsHoveredAsState()
-                    val isPressed by interactionSource.collectIsPressedAsState()
-
-                    val quest = it
-                    val textStyle = remember {
-                        TextStyle(
-                            fontFamily = FontFamily(
-                                Font(
-                                    resource = "font\\FRIZQT__.TTF",
-                                    style = FontStyle.Normal
-                                )
-                            ),
-                            fontSize = 11.sp,
-                            color = quest.difficulty.color,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    val highlightColor = quest.difficulty.color.copy(alpha = 0.5f)
-                    val brush = Brush.horizontalGradient(
-                        0.0f to Color.Transparent,
-                        0.4f to highlightColor,
-                        0.6f to highlightColor,
-                        1f to Color.Transparent,
-                    )
-
-                    with(LocalDensity.current) {
                         Box {
                             Box(
                                 modifier = Modifier
