@@ -16,12 +16,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.toAwtImage
-import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.onPointerEvent
@@ -379,19 +377,47 @@ private fun QuestList(viewModel: MainViewModel) {
                         )
                     }
 
-                    Text(
-                        modifier = Modifier.graphicsLayer {
-                            translationY = if (isPressed) 76f else 75f
-                            translationX = if (isPressed) 51f else 50f
-                        }
-                            .hoverable(interactionSource)
-                            .clickable(
-                                interactionSource = interactionSource,
-                                indication = null
-                            ) { viewModel.onQuestClick(quest) },
-                        style = textStyle.copy(color = if (isHovered) Color.White else quest.difficulty.color),
-                        text = quest.title
+                    val highlightColor = quest.difficulty.color.copy(alpha = 0.5f)
+                    val brush = Brush.horizontalGradient(
+                        0.0f to Color.Transparent,
+                        0.4f to highlightColor,
+                        0.6f to highlightColor,
+                        1f to Color.Transparent,
                     )
+
+                    with(LocalDensity.current) {
+                        Box {
+                            Box(
+                                modifier = Modifier
+                                    .graphicsLayer {
+                                        translationY = 74f
+                                        translationX = 25f
+                                    }
+                                    .size(width = 300.toDp(), height = 18.toDp())
+                                    .composed {
+                                        if (quest.selected) {
+                                            background(brush)
+                                        } else {
+                                            this
+                                        }
+                                    }
+                                    .clickable(
+                                        interactionSource = interactionSource,
+                                        indication = null
+                                    ) { viewModel.onQuestClick(quest) }
+                            )
+                            Text(
+                                modifier = Modifier.graphicsLayer {
+                                    translationY = if (isPressed) 76f else 75f
+                                    translationX = if (isPressed) 51f else 50f
+                                }.hoverable(interactionSource),
+                                style = textStyle.copy(
+                                    color = if (isHovered || quest.selected) Color.White else quest.difficulty.color
+                                ),
+                                text = quest.title
+                            )
+                        }
+                    }
                 }
             }
         }
