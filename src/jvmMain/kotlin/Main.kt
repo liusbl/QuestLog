@@ -56,10 +56,9 @@ fun main() = application {
 }
 
 
-context(ApplicationScope, FrameWindowScope)
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun App(viewModel: MainViewModel) {
+fun ApplicationScope.App(viewModel: MainViewModel) {
     var mousePosition by remember { mutableStateOf(Offset(0f, 0f) to false) }
     MaterialTheme {
         Box(
