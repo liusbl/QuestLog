@@ -1,4 +1,5 @@
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -27,6 +29,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.*
 import org.jetbrains.skia.Image
@@ -52,9 +55,11 @@ fun main() = application {
     }
 }
 
+
+context(ApplicationScope, FrameWindowScope)
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ApplicationScope.App(viewModel: MainViewModel) {
+fun App(viewModel: MainViewModel) {
     var mousePosition by remember { mutableStateOf(Offset(0f, 0f) to false) }
     MaterialTheme {
         Box(
@@ -64,7 +69,6 @@ fun ApplicationScope.App(viewModel: MainViewModel) {
             }
         ) {
             Background()
-            BookIcon()
             CloseButton(onCloseClick = ::exitApplication)
 
             QuestList(viewModel)

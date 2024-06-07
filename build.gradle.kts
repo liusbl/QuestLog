@@ -29,6 +29,10 @@ kotlin {
     }
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    compilerOptions { freeCompilerArgs.add("-Xcontext-receivers") }
+}
+
 compose.desktop {
     application {
         mainClass = "MainKt"
