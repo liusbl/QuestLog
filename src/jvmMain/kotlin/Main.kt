@@ -453,7 +453,7 @@ private fun QuestButtons(onExitClick: () -> Unit) {
     )
 
     Button(
-        title = "Share Quest",
+        title = "Add Quest",
         translationX = 176f,
         scaleX = bigButtonScale,
         textTranslationX = -12f,
