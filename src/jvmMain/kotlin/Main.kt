@@ -45,6 +45,7 @@ fun main() = application {
             width = with(LocalDensity.current) { 1000.toDp() },
             height = with(LocalDensity.current) { 1000.toDp() } // TODO figure out why 512 is bad
         ),
+        title = "Quest Log",
         onCloseRequest = ::exitApplication
     ) {
         App(viewModel)
