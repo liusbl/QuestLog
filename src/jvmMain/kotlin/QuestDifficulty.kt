@@ -8,3 +8,7 @@ enum class QuestDifficulty(val color: Color) {
     Trivial(Color(red = 0.50f, green = 0.50f, blue = 0.50f)),
     Header(Color(red = 0.7f, green = 0.7f, blue = 0.7f))
 }
+
+fun QuestDifficulty(value: String): QuestDifficulty {
+    return QuestDifficulty.valueOf(value)
+}

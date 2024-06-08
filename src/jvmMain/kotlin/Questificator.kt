@@ -1,68 +1,44 @@
+import java.io.File
+
 class Questificator {
-    fun getQuestContainerList(): List<QuestContainer> {
-        return listOf(
-            QuestContainer(
-                id = "_0",
-                title = "Elwynn Forest",
-                expanded = true,
-                questList = listOf(
-                    Quest(
-                        id = "#0",
-                        title = "Wool would work",
-                        summary = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
-                        description = "Lorem ipsum etc, etc",
-                        difficulty = QuestDifficulty.Standard,
-                        selected = true
-                    ),
-                    Quest(
-                        id = "#1",
-                        title = "A Bundle of Trouble",
-                        summary = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
-                        description = "Lorem ipsum etc, etc",
-                        difficulty = QuestDifficulty.Difficult,
-                        selected = false
-                    ),
-                    Quest(
-                        id = "#2",
-                        title = "Red Linen Goods",
-                        summary = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
-                        description = "Lorem ipsum etc, etc",
-                        difficulty = QuestDifficulty.Difficult,
-                        selected = false
+    fun getQuestContainerList(): List<QuestContainer> =
+        File("Quests").walkTopDown()
+            .drop(1)
+            .foldIndexed<File, List<QuestContainer>>(emptyList()) { index, acc, file ->
+                if (file.isDirectory) {
+                    acc + listOf(
+                        QuestContainer(
+                            id = "_$index",
+                            title = file.name,
+                            expanded = true,
+                            questList = emptyList(),
+                        )
                     )
-                )
-            ),
-            QuestContainer(
-                id = "_1",
-                title = "Priest",
-                expanded = true,
-                questList = listOf(
-                    Quest(
-                        id = "#5",
-                        title = "Bounty on Murlocs",
-                        summary = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
-                        description = "Lorem ipsum etc, etc",
-                        difficulty = QuestDifficulty.Difficult,
-                        selected = false
-                    ),
-                    Quest(
-                        id = "#6",
-                        title = "Cloth and Leather Armor",
-                        summary = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
-                        description = "Lorem ipsum etc, etc",
-                        difficulty = QuestDifficulty.VeryDifficult,
-                        selected = false
-                    ),
-                    Quest(
-                        id = "#7",
-                        title = "Desperate Prayer",
-                        summary = "Gather 20 bundles of wool off the sheep in Elwynn Forest and bring them back to Julie Osworth.",
-                        description = "Lorem ipsum etc, etc",
-                        difficulty = QuestDifficulty.Impossible,
-                        selected = false
+                } else {
+                    val (parameters, summary, description) = file.readText().split("--------").map(String::trim)
+                    val parameterMap = parameters.lines().associate {
+                        val (key, value) = it.split(":")
+                        key to value
+                    }
+                    val quest = Quest(
+                        id = parameterMap["id"] ?: "#$index",
+                        title = file.nameWithoutExtension,
+                        summary = summary,
+                        description = description,
+                        difficulty = QuestDifficulty.valueOf(parameterMap["Difficulty"]!!),
+                        selected = index == 1
                     )
+
+                    val lastContainer = acc.last().run {
+                        copy(questList = questList + listOf(quest))
+                    }
+                    acc.dropLast(1) + listOf(lastContainer)
+                }
+            }
+            .sortedBy { it.title }
+            .map { container ->
+                container.copy(questList = container.questList.sortedWith(
+                    compareByDescending<Quest> { it.difficulty }.thenBy { it.title })
                 )
-            )
-        )
-    }
+            }
 }
