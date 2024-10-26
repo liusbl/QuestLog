@@ -5,7 +5,6 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text2.BasicTextField2
 import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material.MaterialTheme
@@ -34,6 +33,7 @@ import org.jetbrains.skia.Image
 import java.awt.Point
 import java.awt.Toolkit
 import java.io.File
+import kotlin.math.roundToInt
 
 fun main() = application {
     val viewModel = MainViewModel(
@@ -77,8 +77,21 @@ fun ApplicationScope.App(viewModel: MainViewModel, frameWindowScope: FrameWindow
 
             QuestButtons(onExitClick = ::exitApplication)
 
+            var scrollKnobScrollRatio by remember { mutableStateOf(0f) }
+            val summaryScrollState = rememberScrollState()
+            LaunchedEffect(scrollKnobScrollRatio) {
+                val newScrollValue = summaryScrollState.maxValue * scrollKnobScrollRatio
+                summaryScrollState.scrollTo(newScrollValue.roundToInt())
+            }
+            LaunchedEffect(summaryScrollState.value) {
+                scrollKnobScrollRatio = summaryScrollState.value / summaryScrollState.maxValue.toFloat()
+            }
             ScrollButtons()
-            ScrollKnob(pointerPosition)
+            ScrollKnob(
+                mousePosition = pointerPosition,
+                scrollRatio = scrollKnobScrollRatio,
+                onScrollRatioChange = { scrollKnobScrollRatio = it }
+            )
 
             val quest = viewModel.currentQuest
 
@@ -86,7 +99,8 @@ fun ApplicationScope.App(viewModel: MainViewModel, frameWindowScope: FrameWindow
                 title = quest.title,
                 onTitleChange = viewModel::onTitleChange,
                 summary = quest.summary,
-                onSummaryChange = viewModel::onSummaryChange
+                onSummaryChange = viewModel::onSummaryChange,
+                summaryScrollState = summaryScrollState,
 //                description = quest.description,
 //                onDescriptionChange = viewModel::onDescriptionChange
             )
@@ -185,7 +199,8 @@ private fun QuestText(
     title: String,
     onTitleChange: (String) -> Unit,
     summary: String,
-    onSummaryChange: (String) -> Unit
+    onSummaryChange: (String) -> Unit,
+    summaryScrollState: ScrollState,
 //    description: String?,
 //    onDescriptionChange: (String) -> Unit
 ) {
@@ -233,6 +248,7 @@ private fun QuestText(
                 textStyle = descriptionStyle,
                 value = summary,
                 onValueChange = onSummaryChange,
+                scrollState = summaryScrollState
             )
             // TODO not sure how to handle some edge cases with description,
             //  like scrolling, empty summary, empty description, etc.
@@ -555,7 +571,6 @@ private fun ScrollButtons() {
             contentDescription = ""
         )
     }
-
 }
 
 val knobSize = 32f
@@ -564,7 +579,11 @@ val scrollBarEndY = 412f
 val knobTranslationX = 646f
 
 @Composable
-private fun ScrollKnob(mousePosition: Pair<Offset, Boolean>) {
+private fun ScrollKnob(
+    mousePosition: Pair<Offset, Boolean>,
+    scrollRatio: Float,
+    onScrollRatioChange: (Float) -> Unit
+) {
     val scrollKnob = remember { File("resources\\UI-ScrollBar-Knob.png") } // 32x32
 
     var knobTranslationY by remember { mutableStateOf(scrollBarStartY) }
@@ -577,18 +596,20 @@ private fun ScrollKnob(mousePosition: Pair<Offset, Boolean>) {
     val yKnobMin = knobTranslationY // by remember { derivedStateOf {
     var interactionStarted by remember { mutableStateOf(false) }
 
-
-//    println("TESTING pressed: $pressed, interactionStarted: $interactionStarted, knobTranslationY: $knobTranslationY, " +
-//            "xKnobMax: $xKnobMax, xKnobMin: $xKnobMin, yKnobMax: $yKnobMax, yKnobMin: $yKnobMin")
     if (pressed && interactionStarted) {
         // middle of interaction
         knobTranslationY = (position.y - knobSize / 2).coerceIn(scrollBarStartY, scrollBarEndY)
+        val ratio = (knobTranslationY - scrollBarStartY) / (scrollBarEndY - scrollBarStartY)
+        onScrollRatioChange(ratio)
     } else if (pressed && position.x > xKnobMin && position.x < xKnobMax && position.y > yKnobMin && position.y < yKnobMax) {
         // first time
         interactionStarted = true
         knobTranslationY = (position.y - knobSize / 2).coerceIn(scrollBarStartY, scrollBarEndY)
+        val ratio = (knobTranslationY - scrollBarStartY) / (scrollBarEndY - scrollBarStartY)
+        onScrollRatioChange(ratio)
     } else if (!pressed) {
         interactionStarted = false
+        knobTranslationY = (scrollBarEndY - scrollBarStartY) * scrollRatio + scrollBarStartY
     }
     Box(
         modifier = Modifier
