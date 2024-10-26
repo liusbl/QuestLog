@@ -88,9 +88,9 @@ fun ApplicationScope.App(viewModel: MainViewModel, frameWindowScope: FrameWindow
                 title = quest.title,
                 onTitleChange = viewModel::onTitleChange,
                 summary = quest.summary,
-                onSummaryChange = viewModel::onSummaryChange,
-                description = quest.description,
-                onDescriptionChange = viewModel::onDescriptionChange
+                onSummaryChange = viewModel::onSummaryChange
+//                description = quest.description,
+//                onDescriptionChange = viewModel::onDescriptionChange
             )
 
             with(frameWindowScope) {
@@ -186,9 +186,9 @@ private fun QuestText(
     title: String,
     onTitleChange: (String) -> Unit,
     summary: String,
-    onSummaryChange: (String) -> Unit,
-    description: String?,
-    onDescriptionChange: (String) -> Unit
+    onSummaryChange: (String) -> Unit
+//    description: String?,
+//    onDescriptionChange: (String) -> Unit
 ) {
     val titleFont = remember {
         TextStyle(
@@ -235,22 +235,25 @@ private fun QuestText(
                 value = summary,
                 onValueChange = onSummaryChange,
             )
-            Spacer(modifier = Modifier.height(with(density) { 8.toDp() }))
-            description?.let {
-                BasicTextField(
-                    modifier = Modifier.width(with(density) { 270.toDp() }),
-                    textStyle = titleFont,
-                    value = "Description",
-                    onValueChange = { /* Do nothing */ },
-                    readOnly = true,
-                )
-                BasicTextField(
-                    modifier = Modifier.width(with(density) { 270.toDp() }),
-                    textStyle = descriptionStyle,
-                    value = description,
-                    onValueChange = onDescriptionChange,
-                )
-            }
+            // TODO not sure how to handle some edge cases with description,
+            //  like scrolling, empty summary, empty description, etc.
+            Feature.Description.todo
+//            Spacer(modifier = Modifier.height(with(density) { 8.toDp() }))
+//            description?.let {
+//                BasicTextField(
+//                    modifier = Modifier.width(with(density) { 270.toDp() }),
+//                    textStyle = titleFont,
+//                    value = "Description",
+//                    onValueChange = { /* Do nothing */ },
+//                    readOnly = true,
+//                )
+//                BasicTextField(
+//                    modifier = Modifier.width(with(density) { 270.toDp() }),
+//                    textStyle = descriptionStyle,
+//                    value = description,
+//                    onValueChange = onDescriptionChange,
+//                )
+//            }
         }
     }
 }

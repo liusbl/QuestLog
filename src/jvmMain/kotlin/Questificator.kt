@@ -23,8 +23,8 @@ class Questificator {
                     val quest = Quest(
                         id = parameterMap["id"] ?: "#$index",
                         title = file.nameWithoutExtension,
-                        summary = summary,
-                        description = description,
+                        summary = summary + "\n" + description,
+//                        description = description,
                         difficulty = QuestDifficulty.valueOf(parameterMap["Difficulty"]!!),
                         selected = index == 1
                     )

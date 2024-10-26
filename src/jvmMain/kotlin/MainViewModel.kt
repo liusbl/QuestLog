@@ -29,13 +29,13 @@ class MainViewModel(
         updateList(oldQuest)
     }
 
-    fun onDescriptionChange(description: String) {
-        val oldQuest = currentQuest
-        currentQuest = currentQuest.copy(description = description)
-
-        // TODO Only do after some ms. update debounce.
-        updateList(oldQuest)
-    }
+//    fun onDescriptionChange(description: String) {
+//        val oldQuest = currentQuest
+//        currentQuest = currentQuest.copy(description = description)
+//
+//        // TODO Only do after some ms. update debounce.
+//        updateList(oldQuest)
+//    }
 
     fun onExpandToggle(it: QuestContainer) {
         questContainerList.update(it) { copy(expanded = !expanded) }
