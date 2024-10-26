@@ -1,7 +1,4 @@
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -9,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text2.BasicTextField2
 import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -181,6 +179,7 @@ private fun CloseButton(
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun QuestText(
     title: String,
@@ -223,13 +222,13 @@ private fun QuestText(
             )
         ) {
             Box(modifier = Modifier.height(with(density) { 75.toDp() }))
-            BasicTextField(
+            BasicTextField2(
                 modifier = Modifier.width(with(density) { 270.toDp() }),
                 textStyle = titleFont,
                 value = title,
                 onValueChange = onTitleChange,
             )
-            BasicTextField(
+            BasicTextField2(
                 modifier = Modifier.width(with(density) { 270.toDp() }),
                 textStyle = descriptionStyle,
                 value = summary,
