@@ -93,6 +93,10 @@ class MainViewModel(
         val moreUpdatedContainer = newContainer.copy(questList = newContainer.questList.set(newQuestIndex, updatedNewQuest))
         questContainerList[newContainerIndex] = moreUpdatedContainer
     }
+
+    fun onScrollRatioSet(ratio: Float) {
+        // TODO store scroll
+    }
 }
 
 fun List<Quest>.set(index: Int, item: Quest): List<Quest> = this.toMutableList().apply { set(index, item) }

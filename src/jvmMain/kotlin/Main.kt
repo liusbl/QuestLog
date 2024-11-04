@@ -90,7 +90,8 @@ fun ApplicationScope.App(viewModel: MainViewModel, frameWindowScope: FrameWindow
             ScrollKnob(
                 mousePosition = pointerPosition,
                 scrollRatio = scrollKnobScrollRatio,
-                onScrollRatioChange = { scrollKnobScrollRatio = it }
+                onScrollRatioChange = { scrollKnobScrollRatio = it },
+                onScrollRatioSet = viewModel::onScrollRatioSet
             )
 
             val quest = viewModel.currentQuest
@@ -582,8 +583,10 @@ val knobTranslationX = 646f
 private fun ScrollKnob(
     mousePosition: Pair<Offset, Boolean>,
     scrollRatio: Float,
-    onScrollRatioChange: (Float) -> Unit
+    onScrollRatioChange: (Float) -> Unit,
+    onScrollRatioSet: (Float) -> Unit
 ) {
+    var lastNotifiedScrollRatio by remember { mutableStateOf(-1.0f) }
     val scrollKnob = remember { File("resources\\UI-ScrollBar-Knob.png") } // 32x32
 
     var knobTranslationY by remember { mutableStateOf(scrollBarStartY) }
@@ -610,6 +613,12 @@ private fun ScrollKnob(
     } else if (!pressed) {
         interactionStarted = false
         knobTranslationY = (scrollBarEndY - scrollBarStartY) * scrollRatio + scrollBarStartY
+        val ratio = (knobTranslationY - scrollBarStartY) / (scrollBarEndY - scrollBarStartY)
+        onScrollRatioChange(ratio)
+        if (lastNotifiedScrollRatio != ratio) {
+            lastNotifiedScrollRatio = ratio
+            onScrollRatioSet(ratio)
+        }
     }
     Box(
         modifier = Modifier
