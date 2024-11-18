@@ -1,4 +1,4 @@
-Difficulty:Standard
+difficulty:Standard
 selected:false
 scrollRatio:0.0
 --------

@@ -26,7 +26,7 @@ class Questificator {
                         title = file.nameWithoutExtension,
                         summary = summary + "\n" + description,
                         //                        description = description,
-                        difficulty = QuestDifficulty.valueOf(parameterMap["Difficulty"]!!),
+                        difficulty = QuestDifficulty.valueOf(parameterMap["difficulty"]!!),
                         selected = parameterMap["selected"].toBoolean(),
                         scrollRatio = parameterMap["scrollRatio"]?.toFloat() ?: 0f
                     )

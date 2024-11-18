@@ -1,4 +1,4 @@
-Difficulty:VeryDifficult
+difficulty:VeryDifficult
 selected:false
 scrollRatio:0.0
 --------

@@ -1,4 +1,4 @@
-Difficulty:Trivial
+difficulty:Trivial
 selected:false
 scrollRatio:0.0
 --------
