@@ -21,6 +21,12 @@ fun List<QuestContainer>.setSelected(
     selected: Boolean
 ): List<QuestContainer> = set(containerId, questId, { quest -> quest.copy(selected = selected) })
 
+fun List<QuestContainer>.setScrollRatio(
+    containerId: QuestContainerId,
+    questId: QuestId,
+    scrollRatio: Float
+): List<QuestContainer> = set(containerId, questId, { quest -> quest.copy(scrollRatio = scrollRatio) })
+
 private fun List<QuestContainer>.set(
     containerId: QuestContainerId,
     questId: QuestId,
