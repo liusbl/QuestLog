@@ -6,21 +6,26 @@ data class QuestContainer(
     val questList: List<Quest>,
 ) : Identifiable
 
-fun QuestContainer.setSummary(
-    questId: String,
-    summary: String
-): QuestContainer {
-    val quest = questList.first { it.id == questId }
-    val newQuestList = questList.set(quest, { quest.copy(summary = summary) })
-    return this.copy(questList = newQuestList)
-}
-
 fun List<QuestContainer>.setSummary(
     containerId: String,
     questId: String,
     summary: String
-): List<QuestContainer> {
+): List<QuestContainer> = set(containerId, questId, { quest -> quest.copy(summary = summary) })
+
+fun List<QuestContainer>.setSelected(
+    containerId: String,
+    questId: String,
+    selected: Boolean
+): List<QuestContainer> = set(containerId, questId, { quest -> quest.copy(selected = selected) })
+
+private fun List<QuestContainer>.set(containerId: String, questId: String, update: (Quest) -> Quest): List<QuestContainer> {
     val questContainer = this.first { it.id == containerId }
-    val newQuestContainer = questContainer.setSummary(questId, summary)
+    val newQuestContainer = questContainer.set(questId, update)
     return this.set(questContainer, { newQuestContainer })
+}
+
+private fun QuestContainer.set(questId: String, update: (Quest) -> Quest): QuestContainer {
+    val quest = questList.first { it.id == questId }
+    val newQuestList = questList.set(quest, { update(quest) })
+    return this.copy(questList = newQuestList)
 }
