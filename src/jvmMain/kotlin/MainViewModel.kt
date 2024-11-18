@@ -12,6 +12,7 @@ class MainViewModel(
     val questContainerList =
         mutableStateListOf<QuestContainer>().apply { addAll(initialQuestContainerList) }
     var currentQuest by mutableStateOf(initialQuestContainerList.flatMap { it.questList }.first { it.selected })
+    var currentContainerId by mutableStateOf(questContainerList.first { it.questList.contains(currentQuest) }.containerId)
 
     fun onTitleChange(title: String) {
         val oldQuest = currentQuest
@@ -90,12 +91,17 @@ class MainViewModel(
         questContainerList[oldContainerIndex] = updatedContainer
 
         val newContainer = questContainerList[newContainerIndex]
-        val moreUpdatedContainer = newContainer.copy(questList = newContainer.questList.set(newQuestIndex, updatedNewQuest))
+        val moreUpdatedContainer =
+            newContainer.copy(questList = newContainer.questList.set(newQuestIndex, updatedNewQuest))
         questContainerList[newContainerIndex] = moreUpdatedContainer
+
+        currentContainerId = moreUpdatedContainer.containerId
     }
 
     fun onScrollRatioSet(ratio: Float) {
-        // TODO store scroll
+        // TODO doesn't quite work
+//        val newList = questContainerList.setScrollRatio(currentContainerId, currentQuest.questId, ratio)
+//        questContainerList.set(newList)
     }
 }
 
@@ -107,4 +113,15 @@ fun SnapshotStateList<QuestContainer>.update(
 ) {
     val index = this.indexOf(oldItem)
     this[index] = oldItem.update()
+}
+
+fun SnapshotStateList<QuestContainer>.set(
+    newContainerList: List<QuestContainer>
+) {
+    val questContainerList = this
+    val modifiedContainers = questContainerList.withIndex()
+        .filter { (index, oldContainer) -> oldContainer != newContainerList[index] }
+    modifiedContainers.forEach { (index, modifiedContainer) ->
+        questContainerList[index] = modifiedContainer
+    }
 }
