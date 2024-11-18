@@ -27,7 +27,8 @@ class Questificator {
                         summary = summary + "\n" + description,
                         //                        description = description,
                         difficulty = QuestDifficulty.valueOf(parameterMap["Difficulty"]!!),
-                        selected = parameterMap["selected"].toBoolean()
+                        selected = parameterMap["selected"].toBoolean(),
+                        scrollRatio = parameterMap["scrollRatio"]?.toFloat() ?: 0f
                     )
 
                     val lastContainer = acc.last().run {
