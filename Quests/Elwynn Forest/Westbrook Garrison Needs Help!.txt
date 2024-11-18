@@ -1,5 +1,4 @@
 Difficulty:Standard
---------
 selected:false
 --------
 Go to the Westbrook Garrison and speak with Deputy Rainer.

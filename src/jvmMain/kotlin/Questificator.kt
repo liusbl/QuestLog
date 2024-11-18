@@ -27,7 +27,7 @@ class Questificator {
                         summary = summary + "\n" + description,
                         //                        description = description,
                         difficulty = QuestDifficulty.valueOf(parameterMap["Difficulty"]!!),
-                        selected = index == 1
+                        selected = parameterMap["selected"].toBoolean()
                     )
 
                     val lastContainer = acc.last().run {

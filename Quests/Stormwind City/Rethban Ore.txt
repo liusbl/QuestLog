@@ -1,5 +1,4 @@
 Difficulty:Difficult
---------
 selected:false
 --------
 Gather 5 loads of Rethban Ore and bring it to Brother Paxton in the Northshire Library.

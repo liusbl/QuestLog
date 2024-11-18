@@ -1,5 +1,4 @@
 Difficulty:Difficult
---------
 selected:false
 --------
 Explore the Fargodeep Mine, then return to Marshal Dughan in Goldshire.

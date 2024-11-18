@@ -1,5 +1,4 @@
 Difficulty:Standard
---------
 selected:false
 --------
 Talk to Gryan Stoutmantle. He usually can be found in the stone tower on Sentinel Hill, just off the road, in the middle of Westfall.

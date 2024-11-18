@@ -1,5 +1,4 @@
 Difficulty:Trivial
---------
 selected:false
 --------
 Bring 8 Torn Murloc Fins to Guard Thomas at the east Elwynn bridge.

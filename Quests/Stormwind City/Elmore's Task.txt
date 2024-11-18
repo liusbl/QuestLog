@@ -1,5 +1,4 @@
 Difficulty:Difficult
---------
 selected:false
 --------
 Speak with Grimand Elmore.

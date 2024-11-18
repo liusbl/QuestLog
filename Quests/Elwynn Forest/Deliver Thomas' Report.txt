@@ -1,6 +1,5 @@
 Difficulty:VeryDifficult
---------
-selected:
+selected:false
 --------
 Report to Marshal Dughan in Goldshire.
 --------
