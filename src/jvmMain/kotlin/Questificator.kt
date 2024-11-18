@@ -10,6 +10,7 @@ class Questificator {
                         QuestContainer(
                             id = "_$index",
                             title = file.name,
+                            path = file.path,
                             expanded = true,
                             questList = emptyList(),
                         )
@@ -24,7 +25,7 @@ class Questificator {
                         id = parameterMap["id"] ?: "#$index",
                         title = file.nameWithoutExtension,
                         summary = summary + "\n" + description,
-//                        description = description,
+                        //                        description = description,
                         difficulty = QuestDifficulty.valueOf(parameterMap["Difficulty"]!!),
                         selected = index == 1
                     )
