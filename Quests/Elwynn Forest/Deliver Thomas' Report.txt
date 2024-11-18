@@ -1,5 +1,7 @@
 Difficulty:VeryDifficult
 --------
+selected:
+--------
 Report to Marshal Dughan in Goldshire.
 --------
 Tell Marshal Dughan of Malakai and Rolf's deaths, and report to him that the Murlocs in eastern Elwynn cannot be contained by our current troop presence.

@@ -1,5 +1,7 @@
 Difficulty:Difficult
 --------
+selected:false
+--------
 Speak with Grimand Elmore.
 --------
 There's a dwarven weaponsmith in Stormwind, Grimand Elmore, who sent word that he needs help with a delivery. I believe he wants a package sent to his homeland in the north.

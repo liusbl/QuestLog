@@ -1,5 +1,7 @@
 Difficulty:Difficult
 --------
+selected:false
+--------
 Bring Bernice's Necklace to "Auntie" Bernice Stonefield at the Stonefield Farm.
 --------
 I was playing near the Fargodeep Mine, and I think I dropped, er...I mean I saw, the old lady's necklace. Don't ask me how it got there...it wasn't me!

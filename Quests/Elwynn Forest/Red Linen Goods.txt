@@ -1,5 +1,7 @@
 Difficulty:Trivial
 --------
+selected:false
+--------
 Bring 6 Red Linen Bandanas to Sara Timberlain at the Eastvale Logging Camp.
 --------
 The Defias gang in Northshire wears burlap masks, but the Defias in Elwynn wear linen which I can use to make fine linen goods.

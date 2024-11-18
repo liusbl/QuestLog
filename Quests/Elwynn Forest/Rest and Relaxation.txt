@@ -1,5 +1,7 @@
 Difficulty:Standard
 --------
+selected:false
+--------
 Speak with Innkeeper Farley at the Lion's Pride Inn.
 --------
 Every adventurer should rest when exhaustion sets in - and there is no finer place to get rest and relaxation than at the Lion's Pride Inn!

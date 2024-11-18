@@ -1,5 +1,7 @@
 Difficulty:Difficult
 --------
+selected:false
+--------
 Explore the Fargodeep Mine, then return to Marshal Dughan in Goldshire.
 --------
 The mine in Northshire isn't the only one with problems! I have reports that the Fargodeep Mine in Elwynn has also become a haven for Kobolds.

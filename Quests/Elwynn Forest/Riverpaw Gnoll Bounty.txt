@@ -1,5 +1,7 @@
 Difficulty:VeryDifficult
 --------
+selected:false
+--------
 Bring 8 Painted Gnoll Armbands to Deputy Rainer at the Barracks.
 --------
 Gnolls, brutish creatures with no decent business in these lands, have been seen along the borders of Elwynn Forest. A large pack of them, many more than we can handle alone, have infested the woods south of the guard tower yonder. Another group has infested the areas near Stone Cairn Lake to the east.

@@ -1,5 +1,7 @@
 Difficulty:Trivial
 --------
+selected:false
+--------
 Bring 8 Torn Murloc Fins to Guard Thomas at the east Elwynn bridge.
 --------
 The Stormwind Army has placed a bounty on murloc lurkers and foragers in Elwynn. Slaughter them and bring me their torn murloc fins, and the Stormwind Army will reward you well.

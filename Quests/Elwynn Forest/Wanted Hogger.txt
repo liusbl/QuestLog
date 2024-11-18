@@ -1,5 +1,7 @@
 Difficulty:Impossible
 --------
+selected:false
+--------
 Slay the gnoll Hogger and bring his Huge Gnoll Claw to Marshal Dughan.
 --------
 Wanted: Hogger
