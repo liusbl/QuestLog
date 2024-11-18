@@ -98,7 +98,9 @@ class MainViewModel(
 
     fun onScrollRatioSet(ratio: Float) {
         // TODO doesn't quite work
-        val currentContainerId = questContainerList.first { it.questList.contains(currentQuest) }.containerId
+        val oldQuest = currentQuest.copy()
+        currentQuest = currentQuest.copy(scrollRatio = ratio)
+        val currentContainerId = questContainerList.first { it.questList.contains(oldQuest) }.containerId
         val newList = questContainerList.setScrollRatio(currentContainerId, currentQuest.questId, ratio)
         questContainerList.set(newList)
     }
@@ -117,10 +119,7 @@ fun SnapshotStateList<QuestContainer>.update(
 fun SnapshotStateList<QuestContainer>.set(
     newContainerList: List<QuestContainer>
 ) {
-    val questContainerList = this
-    val modifiedContainers = questContainerList.withIndex()
-        .filter { (index, oldContainer) -> oldContainer != newContainerList[index] }
-    modifiedContainers.forEach { (index, modifiedContainer) ->
-        questContainerList[index] = modifiedContainer
+    newContainerList.forEachIndexed { index, newQuestContainer ->
+        this[index] = newQuestContainer
     }
 }

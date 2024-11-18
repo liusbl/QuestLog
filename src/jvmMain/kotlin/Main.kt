@@ -77,7 +77,7 @@ fun ApplicationScope.App(viewModel: MainViewModel, frameWindowScope: FrameWindow
 
             QuestButtons(onExitClick = ::exitApplication)
 
-            var scrollKnobScrollRatio by remember { mutableStateOf(0f) }
+            var scrollKnobScrollRatio by remember { mutableStateOf(viewModel.currentQuest.scrollRatio) }
             val summaryScrollState = rememberScrollState()
             LaunchedEffect(scrollKnobScrollRatio) {
                 val newScrollValue = summaryScrollState.maxValue * scrollKnobScrollRatio
