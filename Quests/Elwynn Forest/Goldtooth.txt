@@ -1,5 +1,6 @@
 Difficulty:Difficult
 selected:false
+scrollRatio:0.0
 --------
 Bring Bernice's Necklace to "Auntie" Bernice Stonefield at the Stonefield Farm.
 --------

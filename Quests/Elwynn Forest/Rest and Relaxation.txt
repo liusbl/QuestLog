@@ -1,5 +1,6 @@
 Difficulty:Standard
 selected:false
+scrollRatio:0.0
 --------
 Speak with Innkeeper Farley at the Lion's Pride Inn.
 --------

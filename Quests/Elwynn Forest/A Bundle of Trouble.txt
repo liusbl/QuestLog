@@ -1,5 +1,6 @@
 Difficulty:Difficult
 selected:false
+scrollRatio:0.0
 --------
 Bring 8 Bundles of Wood to Raelen at the Eastvale Logging Camp.
 --------

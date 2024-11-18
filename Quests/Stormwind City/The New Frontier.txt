@@ -1,5 +1,6 @@
 Difficulty:Impossible
 selected:false
+scrollRatio:0.0
 --------
 Speak with Arch Druid Fandral Staghelm at the Cenarion Enclave of Darnassus about the Cenarion Circle's call to explore the frontiers of Kalimdor.
 --------

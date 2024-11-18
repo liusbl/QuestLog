@@ -1,5 +1,6 @@
 Difficulty:Trivial
 selected:false
+scrollRatio:0.0
 --------
 Go to the Gallina Winery, and bring Suzetta Gallina the Wine Ticket for a free bottle of wine.
 --------

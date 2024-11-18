@@ -1,5 +1,6 @@
 Difficulty:VeryDifficult
 selected:false
+scrollRatio:0.0
 --------
 Bring 8 Painted Gnoll Armbands to Deputy Rainer at the Barracks.
 --------

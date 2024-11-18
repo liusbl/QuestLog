@@ -1,5 +1,6 @@
 Difficulty:Trivial
 selected:false
+scrollRatio:0.0
 --------
 Bring 6 Red Linen Bandanas to Sara Timberlain at the Eastvale Logging Camp.
 --------
