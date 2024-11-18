@@ -8,7 +8,7 @@ class Questificator {
                 if (file.isDirectory) {
                     acc + listOf(
                         QuestContainer(
-                            id = "_$index",
+                            containerId = QuestContainerId("_$index"),
                             title = file.name,
                             path = file.path,
                             expanded = true,
@@ -22,7 +22,7 @@ class Questificator {
                         key to value
                     }
                     val quest = Quest(
-                        id = parameterMap["id"] ?: "#$index",
+                        questId = QuestId(parameterMap["id"] ?: "#$index"),
                         title = file.nameWithoutExtension,
                         summary = summary + "\n" + description,
                         //                        description = description,
