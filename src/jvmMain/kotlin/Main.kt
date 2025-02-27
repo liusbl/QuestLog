@@ -126,15 +126,15 @@ fun ApplicationScope.App(viewModel: MainViewModel, frameWindowScope: FrameWindow
 
 @Composable
 private fun rememberPointerIcon() = remember {
-    val bookIcon = File("resources\\Point.png")
+    val bookIcon = File("resources${File.separatorChar}Point.png")
     val image = Image.makeFromEncoded(bookIcon.readBytes()).toComposeImageBitmap().toAwtImage()
     PointerIcon(Toolkit.getDefaultToolkit().createCustomCursor(image, Point(0, 0), "pointer"))
 }
 
 @Composable
 private fun Background() {
-    val leftImage = remember { File("resources\\UI-QuestLog-Left.png") } // 512x512
-    val rightImage = remember { File("resources\\UI-QuestLog-Right.png") } // 256x512
+    val leftImage = remember { File("resources${File.separatorChar}UI-QuestLog-Left.png") } // 512x512
+    val rightImage = remember { File("resources${File.separatorChar}UI-QuestLog-Right.png") } // 256x512
     Row {
         Image(
             bitmap = remember { Image.makeFromEncoded(leftImage.readBytes()).toComposeImageBitmap() },
@@ -149,7 +149,7 @@ private fun Background() {
 
 @Composable
 private fun BookIcon() {
-    val bookIcon = remember { File("resources\\UI-QuestLog-BookIcon.png") }
+    val bookIcon = remember { File("resources${File.separatorChar}UI-QuestLog-BookIcon.png") }
     Image(
         modifier = Modifier
             .graphicsLayer {
@@ -165,8 +165,8 @@ private fun BookIcon() {
 private fun CloseButton(
     onCloseClick: () -> Unit
 ) {
-    val closeButtonUp = remember { File("resources\\UI-Panel-MinimizeButton-Up.png") }
-    val closeButtonDown = remember { File("resources\\UI-Panel-MinimizeButton-Down.png") }
+    val closeButtonUp = remember { File("resources${File.separatorChar}UI-Panel-MinimizeButton-Up.png") }
+    val closeButtonDown = remember { File("resources${File.separatorChar}UI-Panel-MinimizeButton-Down.png") }
 
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -209,7 +209,7 @@ private fun QuestText(
         TextStyle(
             fontFamily = FontFamily(
                 Font(
-                    resource = "font\\MORPHEUS.TTF",
+                    resource = "font${File.separatorChar}MORPHEUS.TTF",
                     style = FontStyle.Normal
                 )
             ),
@@ -221,7 +221,7 @@ private fun QuestText(
         TextStyle(
             fontFamily = FontFamily(
                 Font(
-                    resource = "font\\FRIZQT__.TTF",
+                    resource = "font${File.separatorChar}FRIZQT__.TTF",
                     style = FontStyle.Normal
                 )
             ),
@@ -276,10 +276,10 @@ private fun QuestText(
 
 @Composable
 private fun QuestList(viewModel: MainViewModel) {
-    val minusButtonUp = remember { File("resources\\UI-MinusButton-Up.png") }
-    val minusButtonDown = remember { File("resources\\UI-MinusButton-Down.png") }
-    val plusButtonUp = remember { File("resources\\UI-PlusButton-Up.png") }
-    val plusButtonDown = remember { File("resources\\UI-PlusButton-Down.png") }
+    val minusButtonUp = remember { File("resources${File.separatorChar}UI-MinusButton-Up.png") }
+    val minusButtonDown = remember { File("resources${File.separatorChar}UI-MinusButton-Down.png") }
+    val plusButtonUp = remember { File("resources${File.separatorChar}UI-PlusButton-Up.png") }
+    val plusButtonDown = remember { File("resources${File.separatorChar}UI-PlusButton-Down.png") }
 
     with(LocalDensity.current) {
         LazyColumn(
@@ -351,7 +351,7 @@ private fun QuestList(viewModel: MainViewModel) {
                                 TextStyle(
                                     fontFamily = FontFamily(
                                         Font(
-                                            resource = "font\\FRIZQT__.TTF",
+                                            resource = "font${File.separatorChar}FRIZQT__.TTF",
                                             style = FontStyle.Normal
                                         )
                                     ),
@@ -389,7 +389,7 @@ private fun QuestList(viewModel: MainViewModel) {
                             TextStyle(
                                 fontFamily = FontFamily(
                                     Font(
-                                        resource = "font\\FRIZQT__.TTF",
+                                        resource = "font${File.separatorChar}FRIZQT__.TTF",
                                         style = FontStyle.Normal
                                     )
                                 ),
@@ -447,14 +447,14 @@ private fun QuestList(viewModel: MainViewModel) {
 
 @Composable
 private fun QuestButtons(onExitClick: () -> Unit) {
-    val buttonUp = remember { File("resources\\UI-Panel-Button-Up.png") }
-    val buttonDown = remember { File("resources\\UI-Panel-Button-Down.png") }
+    val buttonUp = remember { File("resources${File.separatorChar}UI-Panel-Button-Up.png") }
+    val buttonDown = remember { File("resources${File.separatorChar}UI-Panel-Button-Down.png") }
 
     val textStyle = remember {
         TextStyle(
             fontFamily = FontFamily(
                 Font(
-                    resource = "font\\FRIZQT__.TTF",
+                    resource = "font${File.separatorChar}FRIZQT__.TTF",
                     style = FontStyle.Normal
                 )
             ),
@@ -539,13 +539,13 @@ private fun QuestButtons(onExitClick: () -> Unit) {
 // TODO Implement scroll buttons
 @Composable
 private fun ScrollButtons() {
-    val buttonTopDisabled = remember { File("resources\\UI-ScrollBar-ScrollUpButton-Disabled.png") }
-    val buttonTopDown = remember { File("resources\\UI-ScrollBar-ScrollUpButton-Down.png") }
-    val buttonTopUp = remember { File("resources\\UI-ScrollBar-ScrollUpButton-Up.png") }
+    val buttonTopDisabled = remember { File("resources${File.separatorChar}UI-ScrollBar-ScrollUpButton-Disabled.png") }
+    val buttonTopDown = remember { File("resources${File.separatorChar}UI-ScrollBar-ScrollUpButton-Down.png") }
+    val buttonTopUp = remember { File("resources${File.separatorChar}UI-ScrollBar-ScrollUpButton-Up.png") }
 
-    val buttonBottomDisabled = remember { File("resources\\UI-ScrollBar-ScrollDownButton-Disabled.png") }
-    val buttonBottomDown = remember { File("resources\\UI-ScrollBar-ScrollDownButton-Down.png") }
-    val buttonBottomUp = remember { File("resources\\UI-ScrollBar-ScrollDownButton-Up.png") }
+    val buttonBottomDisabled = remember { File("resources${File.separatorChar}UI-ScrollBar-ScrollDownButton-Disabled.png") }
+    val buttonBottomDown = remember { File("resources${File.separatorChar}UI-ScrollBar-ScrollDownButton-Down.png") }
+    val buttonBottomUp = remember { File("resources${File.separatorChar}UI-ScrollBar-ScrollDownButton-Up.png") }
 
     Box(
         modifier = Modifier
@@ -587,7 +587,7 @@ private fun ScrollKnob(
     onScrollRatioSet: (Float) -> Unit
 ) {
     var lastNotifiedScrollRatio by remember { mutableStateOf(-1.0f) }
-    val scrollKnob = remember { File("resources\\UI-ScrollBar-Knob.png") } // 32x32
+    val scrollKnob = remember { File("resources${File.separatorChar}UI-ScrollBar-Knob.png") } // 32x32
 
     var knobTranslationY by remember { mutableStateOf(scrollBarStartY) }
     val position = mousePosition.first
